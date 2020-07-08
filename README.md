@@ -2,7 +2,7 @@
 
 ## Table of Contents
  * [Introduction](#introduction)
- * [Preparation & Getting Started](#preparation & getting started)
+ * [Getting Started](#getting-started)
  * [Supported Environments](#supported-environments)
  * [Result](#result)
  * [License](#license)
@@ -31,7 +31,7 @@ libs/arm64-v8a/libcgkit.so:                  64 bit
 
 libs/armeabi-v7a/libcgkit.so:                32 bit
 
-## Preparation & Getting Started
+## Getting Started
 1. Check whether the Android studio development environment is ready. Open the sample code project directory with file "build.gradle" in Android Studio. Run TestApp on your device or simulator which have installed latest Huawei Mobile Service(HMS).
 2. Register a [HUAWEI account](https://developer.huawei.com/consumer/en/).
 3. Create an app, generate a signing certificate and configure the app information in AppGallery Connect.
