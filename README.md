@@ -55,6 +55,6 @@ Add libs/armeabi-v7a/libcgkit.so in SDK to your own project(libs/armeabi-v7a).
 2. Devices with EMUI Vulkan1.0 or Vulkan1.1.
 
 ## Result
-<img src="CGRenderResult.jpg", width = 40% height = 80%>
+<img src="CGRenderResult.jpg">
 ## License
 The sample of CGKit has obtained the [Apache 2.0 license.](http://www.apache.org/licenses/LICENSE-2.0).
