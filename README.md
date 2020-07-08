@@ -1,0 +1,2 @@
+# hms-computer-graphics-demo
+This is the demo project of CGKit(Short for computer graphics kit). CGKit is a vulkan-based rendering framework, which is designed to improve performance of vulkan devices, especially for Android platform. With the help of CGKit, developers can focus on games instead of vulkan specifications. Besides, we will make vulkan compatibility as best as we can, even on low-end devices with older Android api-levels.
