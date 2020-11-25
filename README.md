@@ -6,7 +6,7 @@
  * [License](#license)
 
 ## Introduction
-This is the repository of computer graphics kit samples. We have three samples by now:
+This is the repository of computer graphics kit samples. We have six samples by now:
 1. [huawei-cg-renderframework-android-cpp-demo](https://github.com/HMS-Core/hms-computer-graphics-demo/tree/master/samples/huawei-cg-renderframework-android-cpp-demo): Load and render a basic model, with PBR and lights.
 2. [huawei-cg-smartcachegles-android-cpp-demo](https://github.com/HMS-Core/hms-computer-graphics-demo/tree/master/samples/huawei-cg-smartcachegles-android-cpp-demo): The sample code describes how to use OpenGL Smart Cache.
 3. [huawei-cg-smartcacheprerotationvulkan-android-cpp-demo](https://github.com/HMS-Core/hms-computer-graphics-demo/tree/master/samples/huawei-cg-smartcacheprerotationvulkan-android-cpp-demo): The sample code describes how to use Vulkan Smart Cache and Pre-rotation.
