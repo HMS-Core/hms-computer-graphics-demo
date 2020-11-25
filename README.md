@@ -7,9 +7,12 @@
 
 ## Introduction
 This is the repository of computer graphics kit samples. We have three samples by now:
-1. [cgkit-rendering-demo](https://github.com/HMS-Core/hms-computer-graphics-demo/tree/master/samples/cgkit-rendering-demo): Load and render a basic model, with PBR and lights.
-2. [smart-cache-gles](https://github.com/HMS-Core/hms-computer-graphics-demo/tree/master/samples/smart-cache-gles): The sample code describes how to use OpenGL Smart Cache.
-3. [smart-cache-prerotation-vulkan](https://github.com/HMS-Core/hms-computer-graphics-demo/tree/master/samples/smart-cache-prerotation-vulkan): The sample code describes how to use Vulkan Smart Cache and Pre-rotation.
+1. [huawei-cg-renderframework-android-cpp-demo](https://github.com/HMS-Core/hms-computer-graphics-demo/tree/master/samples/huawei-cg-renderframework-android-cpp-demo): Load and render a basic model, with PBR and lights.
+2. [huawei-cg-smartcachegles-android-cpp-demo](https://github.com/HMS-Core/hms-computer-graphics-demo/tree/master/samples/huawei-cg-smartcachegles-android-cpp-demo): The sample code describes how to use OpenGL Smart Cache.
+3. [huawei-cg-smartcacheprerotationvulkan-android-cpp-demo](https://github.com/HMS-Core/hms-computer-graphics-demo/tree/master/samples/huawei-cg-smartcacheprerotationvulkan-android-cpp-demo): The sample code describes how to use Vulkan Smart Cache and Pre-rotation.
+4. [huawei-cg-occlusionculling-cpp-demo](https://github.com/HMS-Core/hms-computer-graphics-demo/tree/master/samples/huawei-cg-occlusionculling-cpp-demo/Sample): The sample code describes how to use APIs and configurable items of Occlusion Culling.
+5. [huawei-cg-offlinesupres-android-cpp-demo](https://github.com/HMS-Core/hms-computer-graphics-demo/tree/master/samples/huawei-cg-offlinesupres-android-cpp-demo): The sample code provides programs for reference or usage of offline super-resolution plugin.
+6. [huawei-cg-plugin-cpp-demo](https://github.com/HMS-Core/hms-computer-graphics-demo/tree/master/samples/huawei-cg-plugin-cpp-demo): The sample code provides programs for reference or usage of plugin.
 
 For more infomation, you can check out the README file at each sample.
 
