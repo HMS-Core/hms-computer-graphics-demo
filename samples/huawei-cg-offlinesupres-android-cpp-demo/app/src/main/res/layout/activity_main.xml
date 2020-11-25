@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="huawei.apk.MainActivity">
+
+
+    <TextView
+        android:id="@+id/gk_info_panel"
+        android:layout_width="344dp"
+        android:layout_height="195dp"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        android:text=""
+        app:layout_constraintStart_toStartOf="@+id/ChoosePicture"
+        app:layout_constraintTop_toBottomOf="@+id/numSix" />
+
+    <Button
+        android:id="@+id/ChoosePicture"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="选择照片"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/init"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:text="初始化"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="@+id/ChoosePicture"
+        app:layout_constraintTop_toBottomOf="@+id/ChoosePicture" />
+
+    <Button
+        android:id="@+id/uninit"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:text="卸载"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/init"
+        app:layout_constraintTop_toTopOf="@+id/init" />
+
+    <Button
+        android:id="@+id/queryss"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:text="查询SS"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="@+id/ChoosePicture"
+        app:layout_constraintTop_toBottomOf="@+id/init" />
+
+    <Button
+        android:id="@+id/queryie"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:text="查询IE"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/queryss"
+        app:layout_constraintTop_toTopOf="@+id/queryss" />
+
+    <Button
+        android:id="@+id/sssync"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:text="SS Sync"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="@+id/ChoosePicture"
+        app:layout_constraintTop_toBottomOf="@+id/queryss" />
+
+    <Button
+        android:id="@+id/iesync"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="5dp"
+        android:text="IE Sync"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/sssync"
+        app:layout_constraintTop_toTopOf="@+id/sssync" />
+
+    <Button
+        android:id="@+id/ssasync"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="5dp"
+        android:text="SS Async"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/iesync"
+        app:layout_constraintTop_toTopOf="@+id/iesync" />
+
+    <Button
+        android:id="@+id/ieasync"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="5dp"
+        android:text="IE Async"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/ssasync"
+        app:layout_constraintTop_toTopOf="@+id/ssasync" />
+
+    <Button
+        android:id="@+id/numZero"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:text="0.0"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="@+id/ChoosePicture"
+        app:layout_constraintTop_toBottomOf="@+id/sssync" />
+
+    <Button
+        android:id="@+id/numOne"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:text="0.1"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/numZero"
+        app:layout_constraintTop_toTopOf="@+id/numZero" />
+
+    <Button
+        android:id="@+id/numTwo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:text="0.2"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/numOne"
+        app:layout_constraintTop_toTopOf="@+id/numOne" />
+
+    <Button
+        android:id="@+id/numThree"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:text="0.3"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/numTwo"
+        app:layout_constraintTop_toTopOf="@+id/numTwo" />
+
+    <Button
+        android:id="@+id/numFour"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:text="0.4"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/numThree"
+        app:layout_constraintTop_toTopOf="@+id/numThree" />
+
+    <Button
+        android:id="@+id/numFive"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:text="0.5"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/numFour"
+        app:layout_constraintTop_toTopOf="@+id/numFour" />
+
+    <Button
+        android:id="@+id/numSix"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:text="0.6"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="@+id/ChoosePicture"
+        app:layout_constraintTop_toBottomOf="@+id/numFive" />
+
+    <Button
+        android:id="@+id/numSeven"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:text="0.7"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/numSix"
+        app:layout_constraintTop_toTopOf="@+id/numSix" />
+
+    <Button
+        android:id="@+id/numEight"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:text="0.8"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/numSeven"
+        app:layout_constraintTop_toTopOf="@+id/numSeven" />
+
+    <Button
+        android:id="@+id/numNine"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:text="0.9"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/numEight"
+        app:layout_constraintTop_toTopOf="@+id/numEight" />
+
+    <Button
+        android:id="@+id/numTen"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:text="1.0"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/numNine"
+        app:layout_constraintTop_toTopOf="@+id/numNine" />
+
+    <Button
+        android:id="@+id/tm"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:text="tm"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toEndOf="@+id/numTen"
+        app:layout_constraintTop_toTopOf="@+id/numTen" />
+
+    <!--</LinearLayout>-->
+    <!--</ScrollView>-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

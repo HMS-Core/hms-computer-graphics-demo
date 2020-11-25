@@ -1,0 +1,8 @@
+{
+    "plugins" : [
+        {
+            "pluginName" : "PluginDemo",
+            "dynamicLib" : "libPluginDemo.so"
+        }
+    ]
+}
