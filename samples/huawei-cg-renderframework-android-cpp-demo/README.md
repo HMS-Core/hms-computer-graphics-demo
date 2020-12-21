@@ -43,22 +43,25 @@ The following describes heads files of sample code.
    See details: [HUAWEI CGKit Development Preparation](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/environment-req-0000001050200019)
 4. To build this demo, please first import the demo in the Android Studio (3.5+).
 5. Configure the sample code:
-   (1) Change the value of applicationid in the app-level build.gradle file of the sample project to the package name of your app.
-   (2) Add signing certificate(.jks) to the root directory, and change the value of signingConfigs in the app-level build.gradle file of the sample project.
-   (3) Create your own models and materials according to [CG Development Guide](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/demo-data-process-0000001050200023).
-   (4) Add Rendering Framework SDK, cgsdk-plugin-base SDK and cgsdk-plugin-offlinesuperresolution SDK to following direcotories.
+   * Change the value of applicationid in the app-level build.gradle file of the sample project to the package name of your app.
+   * Add signing certificate(.jks) to the root directory, and change the value of signingConfigs in the app-level build.gradle file of the sample project.
+   * Create your own models and materials according to [CG Development Guide](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/demo-data-process-0000001050200023).
+   * Add Rendering Framework SDK, cgsdk-plugin-base SDK and cgsdk-plugin-offlinesuperresolution SDK to following direcotories.
+       
        [Rendering Framework SDK]
-       Add include directory in SDK to your own project(src/cpp/include).
-       Add libs/arm64-v8a/libcgkit.so in SDK to your own project(libs/arm64-v8a).
-       Add libs/armeabi-v7a/libcgkit.so in SDK to your own project(libs/armeabi-v7a).
+       - Add include directory in SDK to your own project(src/cpp/include).
+       - Add libs/arm64-v8a/libcgkit.so in SDK to your own project(libs/arm64-v8a).
+       - Add libs/armeabi-v7a/libcgkit.so in SDK to your own project(libs/armeabi-v7a).
+       
        [cgsdk-plugin-base SDK]
-       Add libs/arm64-v8a/libPluginInterface.so in SDK to your own project(libs/arm64-v8a).
-       Add libs/armeabi-v7a/libPluginInterface.so in SDK to your own project(libs/libPluginInterface-v7a).
+       - Add libs/arm64-v8a/libPluginInterface.so in SDK to your own project(libs/arm64-v8a).
+       - Add libs/armeabi-v7a/libPluginInterface.so in SDK to your own project(libs/libPluginInterface-v7a).
+       
        [cgsdk-plugin-offlinesuperresolution SDK]
-       Add pkg-for-cgsdk/include/OSRPluginCommon.h in SDK to your own project(src/main/cpp/include/OSRPlugin).
-       Add pkg-for-cgsdk/assets/ie_data.bin in SDK to your own project(src/main/assets/resource).
-       Add pluginList directory in SDK to your own project(src/main/assets).
-       Add libs/arm64-v8a/libcgkit_plugin_offlineSupRes.so in SDK to your own project(OSRPlugin/arm64-v8a).
+       - Add pkg-for-cgsdk/include/OSRPluginCommon.h in SDK to your own project(src/main/cpp/include/OSRPlugin).
+       - Add pkg-for-cgsdk/assets/ie_data.bin in SDK to your own project(src/main/assets/resource).
+       - Add pluginList directory in SDK to your own project(src/main/assets).
+       - Add libs/arm64-v8a/libcgkit_plugin_offlineSupRes.so in SDK to your own project(OSRPlugin/arm64-v8a).
 
 6. Run the sample on your Android device or emulator for vulkan rendering demo.
 7. Run the sample on your Android device or emulator for offlinesuperresolution plugin demo:
@@ -73,5 +76,6 @@ The following describes heads files of sample code.
 ## Result
 <img src="CGRenderResult.jpg" width="30%" height="30%">
 <img src="OfflinesuperresolutionResult.ppm" width="80%" height="80%">
+
 ## License
-The sample of CGKit has obtained the [Apache 2.0 license.](http://www.apache.org/licenses/LICENSE-2.0).
+The sample of CGKit has obtained the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
