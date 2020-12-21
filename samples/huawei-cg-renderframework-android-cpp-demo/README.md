@@ -65,9 +65,9 @@ The following describes heads files of sample code.
 
 6. Run the sample on your Android device or emulator for vulkan rendering demo.
 7. Run the sample on your Android device or emulator for offlinesuperresolution plugin demo:
-   (1) Run run.bat in app/src/main/assets/resource directory.
-   (2) Dobule tap screen.
-   (3) Pull the result file form /sdcard/Android/data/com.hisi.CGRenderFrameworkDemo/output_ie_sync.ppm.
+   * Run run.bat in app/src/main/assets/resource directory.
+   * Dobule tap screen.
+   * Pull the result file form /sdcard/Android/data/com.hisi.CGRenderFrameworkDemo/output_ie_sync.ppm.
 
 ## Supported Environments
 1. Devices with Android 8.0 or later.
