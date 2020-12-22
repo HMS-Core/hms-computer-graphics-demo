@@ -18,14 +18,14 @@ Occlusion Culling sample code provides reference of how to use APIs and configur
     Execute the "ndk-build NDK_PROJECT_PATH=. NDK_APPLICATION_MK=Application.mk APP_BUILD_SCRIPT=Android.mk" command in the sample directory.
 
 3. Run the sample:
-  
-  (1) Execute the "adb push" command to push "libpartythirdengine_plugin_oc.so" and "Sample" in the "Sample\obj\local\arm64-v8a" folder to the "/data/local/tmp" directory of   the phone.
 
-  (2) Execute the "export LD_LIBRARY_PATH=/data/local/tmp" command in the shell.
+    Execute the "adb push" command to push "libpartythirdengine_plugin_oc.so" and "Sample" in the "Sample\obj\local\arm64-v8a" folder to the "/data/local/tmp" directory of   the phone.
 
-  (3) Execute "chmod a+x Sample" command in the "/data/local/tmp" directory.
+    Execute the "export LD_LIBRARY_PATH=/data/local/tmp" command in the shell.
 
-  (4) Execute the "./Sample" command in the "/data/local/tmp" directory.
+    Execute "chmod a+x Sample" command in the "/data/local/tmp" directory.
+
+    Execute the "./Sample" command in the "/data/local/tmp" directory.
 
 ## Supported Environments
 1. Devices with Android 7.0 or later.
