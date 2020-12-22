@@ -15,7 +15,7 @@ Occlusion Culling sample code provides reference of how to use APIs and configur
 
 2. Build the sample:
 
-(1) Execute the "ndk-build NDK_PROJECT_PATH=. NDK_APPLICATION_MK=Application.mk APP_BUILD_SCRIPT=Android.mk" command in the sample directory.
+    Execute the "ndk-build NDK_PROJECT_PATH=. NDK_APPLICATION_MK=Application.mk APP_BUILD_SCRIPT=Android.mk" command in the sample directory.
 
 3. Run the sample:
   
