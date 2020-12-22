@@ -31,7 +31,7 @@ Occlusion Culling sample code provides reference of how to use APIs and configur
 1. Devices with Android 7.0 or later.
 
 ## Result
-<img src="OcclusionCullingResult.jpg" width="30%" height="30%">
+<img src="OcclusionCullingResult.jpg" width="50%" height="50%">
 
 ## License
 The sample of Occlusion Culling has obtained the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
