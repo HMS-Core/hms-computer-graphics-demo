@@ -21,11 +21,11 @@ Occlusion Culling sample code provides reference of how to use APIs and configur
 
     Execute the "adb push" command to push "libpartythirdengine_plugin_oc.so" and "Sample" in the "Sample\obj\local\arm64-v8a" folder to the "/data/local/tmp" directory of   the phone.
 
-    Execute the "export LD_LIBRARY_PATH=/data/local/tmp" command in the shell.
+    Execute the `export LD_LIBRARY_PATH=/data/local/tmp` command in the shell.
 
-    Execute "chmod a+x Sample" command in the "/data/local/tmp" directory.
+    Execute `chmod a+x Sample` command in the "/data/local/tmp" directory.
 
-    Execute the "./Sample" command in the "/data/local/tmp" directory.
+    Execute the `./Sample` command in the "/data/local/tmp" directory.
 
 ## Supported Environments
 1. Devices with Android 7.0 or later.
