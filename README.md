@@ -27,4 +27,4 @@ If you have questions about how to use HMS samples, try the following options:
 If you run into a bug in our samples, please submit an [issue](https://github.com/HMS-Core/hms-computer-graphics-demo/issues) to the Repository. Even better you can submit a [Pull Request](https://github.com/HMS-Core/hms-computer-graphics-demo/pulls) with a fix.
 
 ## License
-The sample of CGKit has obtained the [Apache 2.0 license.](http://www.apache.org/licenses/LICENSE-2.0).
+The sample of CGKit has obtained the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
