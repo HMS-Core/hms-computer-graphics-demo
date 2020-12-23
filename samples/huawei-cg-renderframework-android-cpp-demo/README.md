@@ -82,7 +82,7 @@ cgsdk-vulkanframework headers
 　　2. Devices with Vulkan1.0 or Vulkan1.1.<br>
 
 ## Result
- <img src="CGRenderResult.jpg" width="50%" height="50%">
+ <img src="CGRenderResult.jpg" width="30%" height="30%">
  <img src="OfflinesuperresolutionResult.ppm" width="80%" height="80%">
 
 ## License
