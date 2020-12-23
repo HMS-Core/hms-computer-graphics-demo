@@ -10,7 +10,7 @@
 OSRPlugin sample code provides sample programs for reference or usage of offline super-resolution plugin.<br>
 The following describes heads files of sample code.
     
-[SDK DOWNLOAD](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5)<br>
+SDK Archive [SDK DOWNLOAD](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5)<br>
  File|Description
  ---|---
    include/OSRPluginCommon.h:|Head file of necessary enumerations and structures.<br>
