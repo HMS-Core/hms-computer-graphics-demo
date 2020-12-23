@@ -13,10 +13,10 @@
 The sample code describes how to use OpenGL Smart Cache.
 
 Main APIs in sample code:
-1. Query supported extensions: 
+1. Query supported extensions: <br>
 glGetString():query if the device support OpenGL Smart Cache.
 
-2. Add Smart Cache flags: 
+2. Add Smart Cache flags: <br>
 glTexImage2D() or glTexStorage2D():Add Smart Cache Flag when applying for memory.
 
 ## Preparation
@@ -32,4 +32,4 @@ To build the sample, import the sample to Android Studio (3.x +).
 <img src="DemoResult.jpg" width = 80% height = 40%>
 
 ## License
-The sample of OpenGL Smart Cache has obtained the [Apache 2.0 license.](http://www.apache.org/licenses/LICENSE-2.0).
+The sample of OpenGL Smart Cache has obtained the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
