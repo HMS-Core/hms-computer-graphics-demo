@@ -9,7 +9,7 @@
 CGKit Plugin sample code show development of plugin. It provides many sample programs for your reference or usage.<br>
 The following describes heads files of sample code.
 
-[SDK DOWNLOAD](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5) in lib
+SDK Archive([SDK DOWNLOAD](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5)):
 
 [cgsdk-plugin-base SDK] in lib/cgsdk-plugin/cgsdk-plugin-base<br>
  File|Description
