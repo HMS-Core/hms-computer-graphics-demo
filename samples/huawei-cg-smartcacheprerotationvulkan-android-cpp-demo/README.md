@@ -13,9 +13,9 @@
 The sample code describes how to use Vulkan Smart Cache and Pre-rotation.
 
 Main APIs in sample code:
-1. Query supported extensions: 
-vkEnumerateDeviceExtensionProperties():query if the device support Smart Cache and Pre-rotation.
-2. Add extensions: 
+1. Query supported extensions: <br>
+vkEnumerateDeviceExtensionProperties():query if the device support Smart Cache and Pre-rotation.<br>
+2. Add extensions: <br>
 vkCreateDevice():append the related extension to the table.
 
 ## Preparation
@@ -32,4 +32,4 @@ To build the sample, import the sample to Android Studio (3.x +).
 <img src="DemoResult.jpg" width = 80% height = 40%>
 
 ## License
-The sample of Vulkan Smart Cache and Pre-rotation has obtained the [Apache 2.0 license.](http://www.apache.org/licenses/LICENSE-2.0).
+The sample of Vulkan Smart Cache and Pre-rotation has obtained the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
