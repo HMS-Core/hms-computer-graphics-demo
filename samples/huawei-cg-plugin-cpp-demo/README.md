@@ -29,7 +29,7 @@ The following describes heads files of sample code.
 　　　　(3) Add libs/armeabi-v7a/libPluginInterface.so in SDK to your own project(PluginSdk/libs/armeabi-v7a).<br>
 
 　　2. Check whether the NDK development environment is ready, recommand version r21 or higher.<br>
-　　3. Configure the build.bat, set you own NDK_TOOLS path.<br>
+　　3. Configure the build.bat, set your own NDK_TOOLS path.<br>
 　　4. Execute build.bat to generate the plugin.<br>
 
 ## Supported Environments
