@@ -8,7 +8,7 @@
  * [License](#license)
 ## Introduction
 OSRPlugin sample code provides sample programs for reference or usage of offline super-resolution plugin.<br>
-The following describes heads files of sample code.
+The following describes head files of sample code.
     
 ([SDK DOWNLOAD](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5))The path in the compressed package is: cgsdk-plugin.zip/cgsdk-plugin-offlinesuperresolution.zip/cgsdk-plugin-offlinesuperresolution/pkg-for-thirdpartyengine/<br>
  File|Description
