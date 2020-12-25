@@ -73,7 +73,7 @@ cgsdk-vulkanframework headers
 
 6. Run the sample on your Android device or emulator for vulkan rendering demo.<br><br>
 7. Run the sample on your Android device or emulator for offlinesuperresolution plugin demo:<br>
- ● Run run.bat in `app/src/main/assets/resource directory`.<br>
+ ● Run run.bat in `app/src/main/assets/resource` directory.<br>
  ● Dobule tap screen.<br>
  ● Pull the result file form `/sdcard/Android/data/com.hisi.CGRenderFrameworkDemo/output_ie_sync.ppm`.<br>
 
