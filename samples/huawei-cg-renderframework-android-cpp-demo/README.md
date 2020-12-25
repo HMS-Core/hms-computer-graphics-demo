@@ -55,16 +55,16 @@ cgsdk-vulkanframework headers
  ● Add signing certificate(.jks) to the root directory, and change the value of signingConfigs in the app-level build.gradle file of the sample project.<br>
  ● Create your own models and materials according to [CG Development Guide](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/demo-data-process-0000001050200023).<br>
  ● Add Rendering Framework SDK, cgsdk-plugin-base SDK and cgsdk-plugin-offlinesuperresolution SDK to following direcotories.<br>
-       
+     
 　　　[Rendering Framework SDK]<br>
 　　　◉ Add include directory in SDK to your own project(src/cpp/include).<br>
 　　　◉ Add `libs/arm64-v8a/libcgkit.so` in SDK to your own project(libs/arm64-v8a).<br>
 　　　◉ Add `libs/armeabi-v7a/libcgkit.so` in SDK to your own project(libs/armeabi-v7a).<br>
-       
+     
 　　　[cgsdk-plugin-base SDK]<br>
 　　　◉ Add `libs/arm64-v8a/libPluginInterface.so` in SDK to your own project(libs/arm64-v8a).<br>
 　　　◉ Add `libs/armeabi-v7a/libPluginInterface.so` in SDK to your own project(libs/libPluginInterface-v7a).<br>
-       
+     
 　　　[cgsdk-plugin-offlinesuperresolution SDK]<br>
 　　　◉ Add `pkg-for-cgsdk/include/OSRPluginCommon.h` in SDK to your own project(`src/main/cpp/include/OSRPlugin`).<br>
 　　　◉ Add `pkg-for-cgsdk/assets/ie_data.bin` in SDK to your own project(`src/main/assets/resource`).<br>
