@@ -1,36 +1,39 @@
-cmake_minimum_required(VERSION 3.4.1)
+# CMake最低版本为3.10.2
+CMAKE_MINIMUM_REQUIRED(VERSION 3.10.2)
 
-include_directories(
-        ${CMAKE_SOURCE_DIR}/include/CGRenderingFramework )
+# 头文件包含目录
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/include/CGRenderingFramework)
 
-include_directories(
-        ${CMAKE_SOURCE_DIR}/include/MainApplication
-        ${CMAKE_SOURCE_DIR}/include/OSRPlugin)
-
-add_library(
+# libmain.so源码文件清单
+ADD_LIBRARY(
         main-lib
         SHARED
         source/Main.cpp
         source/MainApplication.cpp
         source/OSRPlugin.cpp)
 
+# libcgkit.so导入
 ADD_LIBRARY(
         cgkit
         SHARED
         IMPORTED)
 
-set_target_properties(cgkit
+# libcgkit.so导入路径
+SET_TARGET_PROPERTIES(cgkit
         PROPERTIES IMPORTED_LOCATION
         ${CMAKE_SOURCE_DIR}/../../../libs/${ANDROID_ABI}/libcgkit.so
         )
 
+# Vulkan头文件包含路径
 SET(
         VULKAN_INCLUDE_DIR
         "$ENV{VULKAN_SDK}/include")
         #"${ANDROID_NDK}/sources/third_party/vulkan/src/include")
 
-include_directories(${VULKAN_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${VULKAN_INCLUDE_DIR})
 
+# native_app_glue路径
 SET(
         NATIVE_APP_GLUE_DIR
         "${ANDROID_NDK}/sources/android/native_app_glue")
@@ -40,6 +43,7 @@ FILE(
         "${NATIVE_APP_GLUE_DIR}/*.c"
         "${NATIVE_APP_GLUE_DIR}/*.h")
 
+# 导入native_app_glue
 ADD_LIBRARY(native_app_glue
         STATIC
         ${NATIVE_APP_GLUE_FILLES})
@@ -49,11 +53,12 @@ TARGET_INCLUDE_DIRECTORIES(
         PUBLIC
         ${NATIVE_APP_GLUE_DIR})
 
-find_library(
+# 依赖log模块
+FIND_LIBRARY(
         log-lib
         log )
 
-target_link_libraries(
+TARGET_LINK_LIBRARIES(
         main-lib
         cgkit
         native_app_glue

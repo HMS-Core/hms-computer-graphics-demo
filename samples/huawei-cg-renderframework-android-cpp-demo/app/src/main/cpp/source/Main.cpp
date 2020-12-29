@@ -3,7 +3,8 @@
  * Description: The entry point class in sample, use different defined to distinct platform handle.
  */
 
-#include "MainApplication.h"
+#include "MainApplication/MainApplication.h"
+
 using namespace CGKit;
 
 void android_main(android_app* state)

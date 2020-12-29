@@ -8,13 +8,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "OSRPlugin.h"
+#include "OSRPlugin/OSRPlugin.h"
 
 using namespace std;
 using namespace CGKit;
-static constexpr int CHANNELS_RGB = 3;
-static constexpr int MAX_WIDTH = 4096;
-static constexpr int MAX_HEIGHT = 4096;
+static constexpr s32 CHANNELS_RGB = 3;
+static constexpr u32 MAX_WIDTH = 4096;
+static constexpr u32 MAX_HEIGHT = 4096;
 
 OSRPlugin::OSRPlugin() {}
 
@@ -25,14 +25,14 @@ void CallBack(bool success)
     return;
 }
 
-unsigned char* OSRPlugin::ReadPPM(const String &path, int &width, int &height)
+u8* OSRPlugin::ReadPPM(const String& path, u32& width, u32& height)
 {
     ifstream fIn(path, ios::in | ios::binary);
     if (!fIn.is_open()) {
         return nullptr;
     }
-    unsigned char *pixels = nullptr;
-    int pixelsSize = 0;
+    u8* pixels = nullptr;
+    u32 pixelsSize = 0;
     String line;
     if (getline(fIn, line) && getline(fIn, line)) {
         stringstream ss(line);
@@ -40,7 +40,7 @@ unsigned char* OSRPlugin::ReadPPM(const String &path, int &width, int &height)
             (ss >> height) && (height > 0) && (height <= MAX_HEIGHT) &&
             getline(fIn, line)) {
             pixelsSize = width * height * CHANNELS_RGB;
-            pixels = new(std::nothrow) unsigned char[pixelsSize];
+            pixels = CG_NEW u8[pixelsSize];
             if (pixels == nullptr) {
                 fIn.close();
                 return nullptr;
@@ -54,17 +54,17 @@ unsigned char* OSRPlugin::ReadPPM(const String &path, int &width, int &height)
         return nullptr;
     }
 
-    if (fIn.read(reinterpret_cast<char *>(pixels), pixelsSize)) {
+    if (fIn.read(reinterpret_cast<c8*>(pixels), pixelsSize)) {
         fIn.close();
         return pixels;
     } else {
-        delete[]pixels;
+        CG_DELETE_ARRAY(pixels);
         fIn.close();
         return nullptr;
     }
 }
 
-bool OSRPlugin::WritePPM(const String &path, const unsigned char *pixels, int width, int height)
+bool OSRPlugin::WritePPM(const String& path, const u8* pixels, u32 width, u32 height)
 {
     if (pixels == nullptr || width <= 0 || height <= 0 ||
         width > MAX_WIDTH || height > MAX_HEIGHT) {
@@ -75,12 +75,12 @@ bool OSRPlugin::WritePPM(const String &path, const unsigned char *pixels, int wi
         return false;
     }
     fOut << "P6\n" << width << ' ' << height << "\n255\n";
-    fOut.write(reinterpret_cast<const char *>(pixels), width * height * CHANNELS_RGB);
+    fOut.write(reinterpret_cast<const c8*>(pixels), width * height * CHANNELS_RGB);
     fOut.close();
     return true;
 }
 
-int OSRPlugin::Format2Channel(PixelFormat format)
+s32 OSRPlugin::Format2Channel(PixelFormat format)
 {
     if (format == PIXEL_FORMAT_R8G8B8_UNORM) {
         return CHANNELS_RGB;
@@ -89,13 +89,13 @@ int OSRPlugin::Format2Channel(PixelFormat format)
     }
 }
 
-bool OSRPlugin::CreateBuffer(BufferDescriptor &buffer, int w, int h, PixelFormat format)
+bool OSRPlugin::CreateBuffer(BufferDescriptor& buffer, u32 w, u32 h, PixelFormat format)
 {
-    int c = Format2Channel(format);
+    s32 c = Format2Channel(format);
     if (w <= 0 || h <= 0 || c < 0) {
         return false;
     }
-    unsigned char *pixels = new(std::nothrow) unsigned char[w * h * c];
+    u8* pixels = CG_NEW u8[w * h * c];
     if (pixels == nullptr) {
         return false;
     }
@@ -107,14 +107,14 @@ bool OSRPlugin::CreateBuffer(BufferDescriptor &buffer, int w, int h, PixelFormat
     return true;
 }
 
-bool OSRPlugin::ReadBuffer(BufferDescriptor &buffer, const String &path)
+bool OSRPlugin::ReadBuffer(BufferDescriptor& buffer, const String& path)
 {
-    int w, h;
-    unsigned char *pixels = ReadPPM(path, w, h);
+    u32 w, h;
+    u8* pixels = ReadPPM(path, w, h);
     if (pixels == nullptr) {
         return false;
     }
-    buffer.addr = static_cast<void *>(pixels);
+    buffer.addr = static_cast<void*>(pixels);
     buffer.width = w;
     buffer.height = h;
     buffer.len = w * h * CHANNELS_RGB;
@@ -122,19 +122,19 @@ bool OSRPlugin::ReadBuffer(BufferDescriptor &buffer, const String &path)
     return true;
 }
 
-bool OSRPlugin::WriteBuffer(const BufferDescriptor &buffer, const String &path)
+bool OSRPlugin::WriteBuffer(const BufferDescriptor& buffer, const String& path)
 {
-    if (WritePPM(path, static_cast<unsigned char *>(buffer.addr), buffer.width, buffer.height)) {
+    if (WritePPM(path, static_cast<u8*>(buffer.addr), buffer.width, buffer.height)) {
         return true;
     } else {
         return false;
     }
 }
 
-void OSRPlugin::DeleteBuffer(BufferDescriptor &buffer)
+void OSRPlugin::DeleteBuffer(BufferDescriptor& buffer)
 {
     if (buffer.addr != nullptr) {
-        delete[](static_cast<unsigned char *>(buffer.addr));
+        CG_DELETE(buffer.addr);
     }
     buffer.addr = nullptr;
     buffer.width = buffer.height = buffer.len = 0;
@@ -144,21 +144,21 @@ void OSRPlugin::DeleteBuffer(BufferDescriptor &buffer)
 bool OSRPlugin::SetAssetsDir(const String& localDir)
 {
     Param paramIn, paramOut;
-    char* dir = const_cast<char *>(localDir.c_str());
+    c8* dir = const_cast<c8*>(localDir.c_str());
 
     Param pi0;
     // set opCode
     pi0.Set<s32>(SET_ASSETS_DIR);
     Param pi1;
     // set val
-    pi1.Set<void *>(static_cast<void *>(dir));
+    pi1.Set<void*>(static_cast<void*>(dir));
     // set paramIn
     paramIn.Set(0, pi0);
     paramIn.Set(1, pi1);
 
     Param po0;
     // set val
-    po0.Set<void *>(static_cast<void *>(dir));
+    po0.Set<void*>(static_cast<void*>(dir));
     // set paramOut
     paramOut.Set(0, po0);
 
@@ -173,7 +173,7 @@ bool OSRPlugin::SetAssetsDir(const String& localDir)
     }
 }
 
-bool OSRPlugin::QueryImage(BufferDescriptor& inBuffer, PluginConfig *pluginConfig)
+bool OSRPlugin::QueryImage(BufferDescriptor& inBuffer, PluginConfig* pluginConfig)
 {
     Param paramIn, paramOut;
 
@@ -195,7 +195,7 @@ bool OSRPlugin::QueryImage(BufferDescriptor& inBuffer, PluginConfig *pluginConfi
 
     Param po0;
     // set val
-    po0.Set<void *>(static_cast<void *>(pluginConfig));
+    po0.Set<void*>(static_cast<void*>(pluginConfig));
     // set paramOut
     paramOut.Set(0, po0);
 
@@ -213,16 +213,16 @@ bool OSRPlugin::QueryImage(BufferDescriptor& inBuffer, PluginConfig *pluginConfi
 bool OSRPlugin::ImageEnhancingSync(BufferDescriptor& inBuffer, BufferDescriptor& outBuffer)
 {
     Param paramIn, paramOut;
-    const float sharpness = 0.9;
+    const f32 sharpness = 0.9f;
     const bool toneMapping = true;
-    const int timeOut = 10000;
+    const u32 timeOut = 10000;
 
     Param pi0;
     // set opcode
     pi0.Set<s32>(SYNC_IMAGE_ENHANCING);
     // set val
     Param pi1;
-    pi1.Set<void *>(static_cast<void *>(&inBuffer));
+    pi1.Set<void*>(static_cast<void*>(&inBuffer));
     Param pi2;
     pi2.Set<f32>(sharpness);
     Param pi3;
@@ -238,24 +238,24 @@ bool OSRPlugin::ImageEnhancingSync(BufferDescriptor& inBuffer, BufferDescriptor&
 
     Param po0;
     // set val
-    po0.Set<void *>(static_cast<void *>(&outBuffer));
+    po0.Set<void*>(static_cast<void*>(&outBuffer));
     // set paramOut
     paramOut.Set(0, po0);
 
     // call fn:SYNC_IMAGE_ENHANCING
     bool success = plugin->Execute(paramIn, paramOut);
     if (success) {
-        LOGINFO("Test Sync ImageEnhancing success");
+        LOGINFO("Sync ImageEnhancing success");
         return true;
     } else {
-        LOGERROR("Test Sync ImageEnhancing failed");
+        LOGERROR("Sync ImageEnhancing failed");
         return false;
     }
 }
 
 bool OSRPlugin::PluginInit()
 {
-    std::vector<String> pluginList;
+    vector<String> pluginList;
 
     gPluginManager.Initialize();
     pluginList = gPluginManager.GetPluginList();
@@ -287,7 +287,7 @@ void OSRPlugin::PluginDeInit()
     gPluginManager.Uninitialize();
 }
 
-void OSRPlugin::PluginTest()
+void OSRPlugin::ExecuteOSR(const String localDir)
 {
     bool ret = false;
     ret = PluginInit();
@@ -295,8 +295,7 @@ void OSRPlugin::PluginTest()
         return;
     }
 
-    // set default directory, push ie_data.bin & input image here
-    const String localDir = "/sdcard/Android/data/com.hisi.CGRenderFrameworkDemo";
+    // push ie_data.bin & input image here
     ret = SetAssetsDir(localDir);
     if (!ret) {
         PluginDeInit();
@@ -305,7 +304,11 @@ void OSRPlugin::PluginTest()
 
     // setup inBuffer
     const String inputFn = "input.ppm";
-    String imgPath = localDir + "/" + inputFn;
+    String imgPath = localDir;
+    if(imgPath.length() != 0 && imgPath[imgPath.length() - 1] != '/') {
+        imgPath += "/";
+    }
+    imgPath += inputFn;
     BufferDescriptor inBuffer, outBuffer;
     if (!ReadBuffer(inBuffer, imgPath)) {
         LOGERROR("Setup inBuffer failed!");
@@ -316,7 +319,7 @@ void OSRPlugin::PluginTest()
             inBuffer.width, inBuffer.height, inBuffer.len);
 
     // query image
-    PluginConfig *pluginConfig = static_cast<PluginConfig *>(malloc(sizeof(PluginConfig)));
+    PluginConfig* pluginConfig = static_cast<PluginConfig*>(malloc(sizeof(PluginConfig)));
     if (pluginConfig == nullptr) {
         LOGERROR("malloc failed!");
         DeleteBuffer(inBuffer);
@@ -332,7 +335,7 @@ void OSRPlugin::PluginTest()
     }
 
     // setup outBuffer
-    int outW, outH, estimatedTime;
+    u32 outW, outH, estimatedTime;
     PixelFormat outFormat;
     outW = pluginConfig->output.width;
     outH = pluginConfig->output.height;

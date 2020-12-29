@@ -6,22 +6,14 @@
 #ifndef MAIN_APPLICATION_H
 #define MAIN_APPLICATION_H
 
-#define CGKIT_LOG
-#include "Application/CGKitHeaders.h"
-
-enum TouchCountNum {
-    TOUCH_COUNT_MOVE = 1,
-    TOUCH_COUNT_ZOOM,
-    TOUCH_COUNT_MULTI_FINGER,
-    TOUCH_COUNT_MAX = TOUCH_COUNT_MULTI_FINGER
-};
+#include "CGRenderingFramework/Application/CGKitHeaders.h"
 
 class MainApplication : public CGKit::BaseApplication {
 public:
     MainApplication();
     virtual ~MainApplication();
     virtual void Start(void* param);
-    virtual void Initialize(void* winHandle, CGKit::u32 width, CGKit::u32 height);
+    virtual void Initialize(const void* winHandle, CGKit::u32 width, CGKit::u32 height);
     virtual void UnInitialize();
     virtual void InitScene();
     virtual void Update(CGKit::f32 deltaTime);
@@ -29,22 +21,24 @@ public:
     virtual void ProcessInputEvent(const CGKit::InputEvent* inputEvent);
 
 private:
+    bool SetupCamera();
+    bool SetupDefaultModel();
     CGKit::SceneObject* CreateSkybox();
-    void ProcessSingleTap(int64_t lastTouchDownTime, int64_t preTouchUpTime);
+    void ExecuteOSRPlugin();
 private:
     bool m_touchBegin;
-    bool m_pluginTested {false};
-    float m_touchPosX;
-    float m_touchPosY;
-    float m_deltaTime;
-    float m_deltaAccumulate = 0.0f;
-    float m_objectRotation = 0.0f;
-    float m_objectScale = 1.0f;
+    bool m_osrPluginExecuted = false;
+    CGKit::f32 m_touchPosX;
+    CGKit::f32 m_touchPosY;
+    CGKit::f32 m_deltaTime;
+    CGKit::f32 m_deltaAccumulate = 0.0f;
+    CGKit::f32 m_objectRotation = 0.0f;
+    CGKit::f32 m_objectScale = 1.0f;
     const CGKit::Vector3 SCENE_OBJECT_POSITION = CGKit::Vector3(0.0f, -18.0f, 40.0f);
     const CGKit::Vector3 SCENE_OBJECT_SCALE = CGKit::Vector3(30.f, 30.f, 30.f);
     CGKit::SceneObject* m_cameraObject = nullptr;
-    CGKit::SceneObject* m_sceneObject = nullptr;
-    CGKit::SceneObject* m_lightObject = nullptr;
+    CGKit::SceneObject* m_modelObject = nullptr;
+    CGKit::SceneObject* m_directionalLightObject = nullptr;
     CGKit::SceneObject* m_skyObject = nullptr;
     CGKit::SceneObject* m_pointLightObject = nullptr;
     CGKit::Camera* m_mainCamera = nullptr;
@@ -52,5 +46,4 @@ private:
 };
 
 CGKit::BaseApplication* CreateMainApplication();
-
 #endif

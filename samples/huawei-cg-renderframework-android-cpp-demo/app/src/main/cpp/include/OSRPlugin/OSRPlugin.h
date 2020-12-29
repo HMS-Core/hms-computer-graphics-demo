@@ -1,16 +1,19 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2020-2020. All rights reserved.
  * Description:
+ * Author: lufei
+ * Create: 2020-9-7
  */
+
 #ifndef OSRPLUGIN_H
 #define OSRPLUGIN_H
-#include "OSRPluginCommon.h"
-#include "MainApplication.h"
+
+#include "OSRPlugin/OSRPluginCommon.h"
+#include "MainApplication/MainApplication.h"
 
 namespace CGKit {
-/**
- * @brief Describes pixel format.
- */
+
+// Describes pixel format.
 enum OSROperationCode {
     QUERY_SUPER_SAMPLING = 0,
     QUERY_IMAGE_ENHANCING = 1,
@@ -21,7 +24,7 @@ enum OSROperationCode {
     SET_ASSETS_DIR = 6
 };
 
-static inline int64_t GetCurrentTime()
+static inline s64 GetCurrentTime()
 {
     struct timeval tv;
     gettimeofday(&tv, nullptr);
@@ -32,23 +35,25 @@ class OSRPlugin {
 public:
     OSRPlugin();
     ~OSRPlugin();
-    void PluginTest();
+    void ExecuteOSR(const String localDir);
 
 private:
-    unsigned char* ReadPPM(const String &path, int &width, int &height);
-    int Format2Channel(PixelFormat format);
-    bool WritePPM(const String &path, const unsigned char *pixels, int width, int height);
-    bool CreateBuffer(BufferDescriptor &buffer, int w, int h, PixelFormat format);
-    bool ReadBuffer(BufferDescriptor &buffer, const String &path);
-    bool WriteBuffer(const BufferDescriptor &buffer, const String &path);
-    void DeleteBuffer(BufferDescriptor &buffer);
+    u8* ReadPPM(const String& path, u32& width, u32& height);
+    s32 Format2Channel(PixelFormat format);
+    bool WritePPM(const String& path, const u8* pixels, u32 width, u32 height);
+    bool CreateBuffer(BufferDescriptor& buffer, u32 w, u32 h, PixelFormat format);
+    bool ReadBuffer(BufferDescriptor& buffer, const String& path);
+    bool WriteBuffer(const BufferDescriptor& buffer, const String& path);
+    void DeleteBuffer(BufferDescriptor& buffer);
     bool SetAssetsDir(const String& localDir);
-    bool QueryImage(BufferDescriptor& inBuffer, PluginConfig *pluginConfig);
+    bool QueryImage(BufferDescriptor& inBuffer, PluginConfig* pluginConfig);
     bool ImageEnhancingSync(BufferDescriptor& inBuffer, BufferDescriptor& outBuffer);
     bool PluginInit();
     void PluginDeInit();
-    IPlugin *plugin {nullptr};
-    const String pluginName {"OfflineSupRes"};
+
+private:
+    IPlugin* plugin = nullptr;
+    const String pluginName = "OfflineSupRes";
 };
 }  // namespace CGKit
 #endif
