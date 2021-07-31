@@ -1,0 +1,28 @@
+{
+    "rasterizationState": {
+        "cullMode": "CULL_MODE_NONE"
+    },
+    "depthStencilState": {
+        "depthTestEnable": true,
+        "depthWriteEnable": true
+    },
+
+    "blendAttachmentState": {},
+
+    "resource": {
+        "texture": [
+            {
+                "uri": "cubemaps/02/cubemap_02_nomip.ktx",
+                "name": "envTexture",
+                "samplerIndex": 0
+            }
+        ],
+        "sampler": [{ }],
+        "shader": [
+            {
+                "uri": "shaders/sky.frag",
+                "type": "SHADER_STAGE_TYPE_FRAGMENT"
+            }
+        ]
+    }
+}

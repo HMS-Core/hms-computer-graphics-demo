@@ -1,0 +1,8 @@
+{
+    "plugins" : [
+        {
+            "pluginName" : "OfflineSupRes",
+            "dynamicLib" : "libcgkit_plugin_offlineSupRes.so"
+        }
+    ]
+}

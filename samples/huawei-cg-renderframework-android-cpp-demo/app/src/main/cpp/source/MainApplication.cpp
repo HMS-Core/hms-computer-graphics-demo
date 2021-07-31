@@ -3,7 +3,7 @@
  * Description: A sample that illustrates the rendering of a demo scene.
  */
 
-// 启用日志，不定义CGKIT_LOG则没有日志输出
+// Define the CGKIT_LOG macro to enable logging.
 #define CGKIT_LOG
 #include "MainApplication/MainApplication.h"
 #include "OSRPlugin/OSRPlugin.h"
@@ -12,146 +12,124 @@
 using namespace CGKit;
 
 const u32 HALF_CORE_NUM = 4;
-// 设置双击事件间隔，单位毫秒
+
+// Set the interval of double-tap events, in milliseconds.
 const u64 DOUBLE_TAP_INTERVAL_MS = 500;
 
 MainApplication::MainApplication() {}
 
 MainApplication::~MainApplication() {}
 
-// 启动cgkit并配置系统事件监听
+// Start CG Kit and configure system event listening.
 void MainApplication::Start(void* param)
 {
+    gCGKitInterface.SetSceneManagerType(SCENE_MANAGER_TYPE_QUADTREE);
     BaseApplication::Start(param);
 
-    // 这里设置日志等级为VERBOSE，用以覆盖cgkit默认的日志级别
+    // Set the log level to LOG_VERBOSE to overwrite the default log level of CG Kit.
     Log::SetLogLevel(LOG_VERBOSE);
 }
 
-// 初始化cgkit的资源管理器，场景管理器以及渲染器等
+// Initialize the resource manager, scene manager, and renderer of CG Kit.
 void MainApplication::Initialize(const void* winHandle, u32 width, u32 height)
 {
+    // Set the number of threads.
     gCGKitInterface.SetThreadCount(HALF_CORE_NUM);
+    // Turn on the multi-threaded rendering switch, the default is false to not star.
     gCGKitInterface.SetMultiThreadRendering(true);
     BaseApplication::Initialize(winHandle, width, height);
 }
 
-// 销毁有关资源
-void MainApplication::UnInitialize()
+// Destroy allocations.
+void MainApplication::Uninitialize()
 {
-    // 销毁相机
+    // Destroy the camera object.
     if (m_cameraObject != nullptr) {
         gSceneManager.DeleteObject(m_cameraObject);
         m_mainCamera = nullptr;
         m_cameraObject = nullptr;
     }
 
-    // 销毁模型
+    // Destroy the model.
     if (m_modelObject != nullptr) {
         gSceneManager.DeleteObject(m_modelObject);
         m_modelObject = nullptr;
     }
 
-    // 销毁天空盒
+    // Destroy the skybox.
     if (m_skyObject != nullptr) {
         gSceneManager.DeleteObject(m_skyObject);
         m_skyObject = nullptr;
     }
 
-    // 销毁平行光源
+    // Destroy the directional light source.
     if (m_directionalLightObject != nullptr) {
         gSceneManager.DeleteObject(m_directionalLightObject);
         m_directionalLightObject = nullptr;
     }
 
-    // 销毁点光源
+    // Destroy the point light source.
     if (m_pointLightObject != nullptr) {
         gSceneManager.DeleteObject(m_pointLightObject);
         m_pointLightObject = nullptr;
     }
 
-    // 前面先销毁用户自己申请的有关资源，然后调用cgkit系统的销毁方法释放系统资源
-    BaseApplication::UnInitialize();
+    // Destroy all your allocations and then call the destruction method of CG Kit to uninitialize the system.
+    BaseApplication::Uninitialize();
 }
 
-// 初始化场景
-// 添加相机，设置默认模型，设置天空盒，添加平行光和点光源
+/*
+ * Initialize the scene.
+ * Add a camera, set the default model, set the skybox, and add directional light and point light sources.
+ */
 void MainApplication::InitScene()
 {
     LOGINFO("MainApplication InitScene.");
     BaseApplication::InitScene();
+    const u32 sceneWidth = 1024;
+    const u32 sceneHeight = 1024;
+    const u32 sceneDepth = 1024;
+    const Vector3 center = { 0.0, 0.0, 0.0 };
+    gSceneManager.InitScene(center, sceneWidth, sceneHeight, sceneDepth);
 
-    // 设置相机
+    // Set the camera.
     if(!SetupCamera()) {
         return;
     }
 
-    // 设置默认模型
+    // Set the default model.
     if(!SetupDefaultModel()) {
         return;
     }
 
-    // 设置天空盒
+    // Set the skybox.
     m_skyObject = CreateSkybox();
     if (m_skyObject != nullptr) {
-        // 天空盒大小需要设置足够大，以包含场景内的物体
+        // The skybox needs to be large enough to contain all the objects in the scene.
         m_skyObject->SetScale(Vector3(100.f, 100.f, 100.f));
     }
 
-    // 添加平行光
-    m_directionalLightObject = CG_NEW SceneObject(nullptr);
-    if (m_directionalLightObject != nullptr) {
-        // SceneObject需要添加Light组件得到Light对象
-        Light* lightCom = m_directionalLightObject->AddComponent<Light>();
-        if (lightCom != nullptr) {
-            // 设置平行光为白色
-            lightCom->SetColor(Vector3::ONE);
+    // Add a directional light source.
+    AddDirectionalLight();
 
-            // 设置方向
-            const Vector3 lightDir(0.1f, 0.2f, 1.0f);
-            lightCom->SetDirection(lightDir);
-
-            // 设置类型为平行光
-            lightCom->SetLightType(LIGHT_TYPE_DIRECTIONAL);
-        } else {
-            LOGERROR("Failed to create directional light.");
-        }
-    } else {
-        LOG_ALLOC_ERROR("Failed to create directional light.");
-    }
-
-    // 添加点光源
-    m_pointLightObject = CG_NEW SceneObject(nullptr);
-    if (m_pointLightObject != nullptr) {
-        // SceneObject需要添加Light组件得到Light对象
-        Light* lightCom = m_pointLightObject->AddComponent<Light>();
-        if (lightCom != nullptr) {
-            const Vector3 lightColor(0.0f, 1.0f, 1.0f);
-            lightCom->SetColor(lightColor);
-            lightCom->SetIntensity(10000.f);
-            lightCom->SetLightType(LIGHT_TYPE_POINT);
-        } else {
-            LOGERROR("Failed to create point light.");
-        }
-    } else {
-        LOG_ALLOC_ERROR("Failed to create point light.");
-    }
+    // Add a point light source.
+    AddPointLight();
 }
 
-// 处理每一帧更新逻辑
+// Set the update logic every frame.
 void MainApplication::Update(float deltaTime)
 {
-    // deltaTime为两帧之间的时间间隔，单位是秒
+    // deltaTime indicates the interval between consecutive frames, in seconds.
     m_deltaTime = deltaTime;
     m_deltaAccumulate += deltaTime;
 
-    // 这里每一帧设置旋转和大小，m_objectRotation和m_objectScale变量会在手势事件中被动态改变
+    // Set the rotation and scale for each frame. The m_objectRotation and m_objectScale variables are dynamically changed in gesture events.
     if (m_modelObject != nullptr) {
         m_modelObject->SetRotation(Vector3(0.0, m_objectRotation, 0.0));
         m_modelObject->SetScale(SCENE_OBJECT_SCALE * m_objectScale);
     }
 
-    // 实时调整灯光空间位置
+    // Adjust the light position in real time.
     const f32 moveRatioX = 0.2f;
     const f32 moveRatioY = 0.5f;
     const f32 pointLightCircle = 50.f;
@@ -161,26 +139,30 @@ void MainApplication::Update(float deltaTime)
             cos(m_deltaAccumulate * moveRatioX) * pointLightCircle));
     }
 
-    // 调用cgkit默认更新逻辑
+    // Call the default update logic of CG Kit.
     BaseApplication::Update(deltaTime);
 }
 
-// 处理窗口大小变化
+// Deal with window size changes.
 void MainApplication::Resize(u32 width, u32 height)
 {
-    // 设置对应视口
-    // 如果不进行设置，旋转屏幕后则继续使用原来的视口，可能导致渲染画面无法填充满整个屏幕
+    /*
+     * Set the viewport.
+     * If the viewport is not set, the original viewport is used after the scene is rotated, resulting in the failure to fill the entire screen with the rendered image.
+     */
     if (m_mainCamera != nullptr) {
         m_mainCamera->SetViewport(0, 0, width, height);
     }
 
-    // 继续cgkit默认处理逻辑
+    // Continue with the default processing logic of CG Kit. Pay attention to the calling sequence, that is, set the viewport, and then pass the updated arguments to CG Kit to match the changed window size.
     BaseApplication::Resize(width, height);
 }
 
-// 处理输入事件
-// cgkit支持多手指触摸事件，本demo仅演示单指触摸事件
-// 通过单个手指横向滑动旋转模型，纵向滑动缩放模型
+/*
+ * Process input events.
+ * CG Kit supports multi-touch events. This demo demonstrates only single-touch events.
+ * Realize the support of model rotation by dragging the model side to side, and model scaling by dragging the model up or down.
+ */
 void MainApplication::ProcessInputEvent(const InputEvent* inputEvent)
 {
     if (inputEvent == nullptr) {
@@ -188,45 +170,45 @@ void MainApplication::ProcessInputEvent(const InputEvent* inputEvent)
         return;
     }
 
-    // 调用cgkit默认事件处理逻辑
+    // Call the default processing logic of CG Kit.
     BaseApplication::ProcessInputEvent(inputEvent);
 
-    // 针对收到的事件进行自定义设置
+    // Customize input events.
     EventSource source = inputEvent->GetSource();
     static bool tapDetected = false;
     static s64 lastTime = 0;
 
-    // 本demo仅演示触摸事件
+    // This demo demonstrates only touch events.
     if(source != EVENT_SOURCE_TOUCHSCREEN) {
         return;
     }
 
     const TouchInputEvent* touchEvent = reinterpret_cast<const TouchInputEvent*>(inputEvent);
 
-    // 本demo仅演示单指滑动和缩放
+    // This demo demonstrates only the single-finger slide and scaling functions.
     if (touchEvent->GetTouchCount() > 1) {
         return;
     }
 
-    // 触摸事件按压
+    // Touch action: press
     if (touchEvent->GetAction() == TOUCH_ACTION_DOWN) {
         LOGINFO("Action move start.");
         m_touchBegin = true;
-        // 两次点击间隔在双击间隔内，作为双击
+        // Two taps happening within the double-tap interval constitute a double-tap action.
         if (!m_osrPluginExecuted && tapDetected && (abs(GetCurrentTime() - lastTime) < DOUBLE_TAP_INTERVAL_MS)) {
             ExecuteOSRPlugin();
         }
-    } else if (touchEvent->GetAction() == TOUCH_ACTION_MOVE) {  // 触摸事件移动
-        // 确保已经是开始触摸的状态，以获取上一次的触摸坐标信息
+    } else if (touchEvent->GetAction() == TOUCH_ACTION_MOVE) {  // Touch action: move
+        // Ensure that the touch is started to obtain the coordinates of last touch.
         if (!m_touchBegin) {
             return;
         }
 
-        // 获取事件坐标和前一次记录纵横坐标差值，用于计算模型变化数据
+        // Obtain the difference between the coordinates of the current and previous touch events for calculating the model change.
         f32 touchPosDeltaX = touchEvent->GetPosX(touchEvent->GetTouchIndex()) - m_touchPosX;
         f32 touchPosDeltaY = touchEvent->GetPosY(touchEvent->GetTouchIndex()) - m_touchPosY;
 
-        // 与上次事件触摸坐标距离超过设定值才认定为有效事件，以防止误触抖动
+        // A valid event is determined only when the difference between the coordinates of the current and previous events exceeds the preset value, to prevent unintentional vibration.
         if (fabs(touchPosDeltaX) > 2.f) {
             if (touchPosDeltaX > 0.f) {
                 m_objectRotation -= 2.f * m_deltaTime;
@@ -243,38 +225,40 @@ void MainApplication::ProcessInputEvent(const InputEvent* inputEvent)
                 m_objectScale += 0.25f * m_deltaTime;
             }
 
-            // 模型大小设定为0.75-1.25之间
+            // Set the model size to a value between 0.75 and 1.25.
             m_objectScale = std::min(1.25f, std::max(0.75f, m_objectScale));
             LOGINFO("Set scale start.");
         }
-    } else if (touchEvent->GetAction() == TOUCH_ACTION_UP) {  // 触摸事件抬起
+    } else if (touchEvent->GetAction() == TOUCH_ACTION_UP) {  // Touch action: release
         LOGINFO("Action up.");
         m_touchBegin = false;
         if (!m_osrPluginExecuted) {
             tapDetected = true;
             lastTime = GetCurrentTime();
         }
-    } else if (touchEvent->GetAction() == TOUCH_ACTION_CANCEL) {  // 触摸事件取消
+    } else if (touchEvent->GetAction() == TOUCH_ACTION_CANCEL) {  // Cancel the touch action.
         LOGINFO("Action cancel.");
         m_touchBegin = false;
     }
 
-    // 记录本次触摸事件坐标，以便下一次参考计算移动量
+    // Record the coordinates of the current touch event for calculating the next movement.
     m_touchPosX = touchEvent->GetPosX(touchEvent->GetTouchIndex());
     m_touchPosY = touchEvent->GetPosY(touchEvent->GetTouchIndex());
 }
 
 bool MainApplication::SetupCamera()
 {
-    // 添加相机
-    // 相机是SceneObject类型，需先创建一个SceneObject
-    m_cameraObject = CG_NEW SceneObject(nullptr);
+    /*
+     * Add a camera.
+     * Create a SceneObject object.
+     */
+    m_cameraObject = gSceneManager.CreateSceneObject();
     if (m_cameraObject == nullptr) {
         LOGERROR("Failed to create camera object.");
         return false;
     }
 
-    // 然后在该SceneObject对象上添加Camera组件，得到Camera对象
+    // Add the Camera component to the SceneObject object to obtain the Camera object.
     m_mainCamera = m_cameraObject->AddComponent<Camera>();
     if (m_mainCamera == nullptr) {
         CG_SAFE_DELETE(m_cameraObject);
@@ -282,22 +266,22 @@ bool MainApplication::SetupCamera()
         return false;
     }
 
-    // 设置相机有关参数
+    // Set camera parameters.
     const f32 FOV = 60.f;
     const f32 NEAR = 0.1f;
     const f32 FAR = 500.0f;
     const Vector3 EYE_POSITION(0.0f, 0.0f, 0.0f);
 
-    // 相机位置初始化为原点
+    // Initialize the camera position to the origin.
     m_cameraObject->SetPosition(EYE_POSITION);
 
-    // 相机类型初始化为透视投影类型，与人眼观看近大远小效果一致
+    // The camera type is initialized to perspective projection, to simulate human vision.
     m_mainCamera->SetProjectionType(ProjectionType::PROJECTION_TYPE_PERSPECTIVE);
 
-    // 设置透视投影的参数，包括FOV，屏幕宽高比以及近平面和远平面
+    // Set perspective projection parameters, including the FOV, aspect ratio, near clipping plane, and far clipping plane.
     m_mainCamera->SetPerspective(FOV, gCGKitInterface.GetAspectRatio(), NEAR, FAR);
 
-    // 设置相机视口，默认为全屏显示
+    // Set the camera viewport. By default, the camera viewport is displayed in full screen.
     m_mainCamera->SetViewport(0, 0, gCGKitInterface.GetScreenWidth(), gCGKitInterface.GetScreenHeight());
     gSceneManager.SetMainCamera(m_mainCamera);
     LOGINFO("Setup main camera done.");
@@ -306,106 +290,13 @@ bool MainApplication::SetupCamera()
 
 bool MainApplication::SetupDefaultModel()
 {
-    // 加载默认模型，目前只支持obj格式
-    String modelName = "models/Avatar/body.obj";
-    Model* model = dynamic_cast<Model*>(gResourceManager.Get(modelName));
-
-    if (model == nullptr) {
-        LOGERROR("Failed to load default model.");
-        return false;
-    }
-
-    // 将模型添加到场景中
-    MeshRenderer* meshRenderer = nullptr;
-    m_modelObject = gSceneManager.CreateSceneObject();
+    m_modelObject = CreateObject("models/Avatar/body.obj", "material/Avatar.cgmat");
     if (m_modelObject == nullptr) {
-        LOGERROR("Failed to create scene object for default model.");
+        LOGERROR("Create scene object failed");
         return false;
     }
 
-    // SceneObject对象要添加MeshRenderer组件才能渲染
-    meshRenderer = m_modelObject->AddComponent<MeshRenderer>();
-    if (meshRenderer == nullptr) {
-        LOGERROR("Failed to add MeshRenderer for default model.");
-        return false;
-    }
-
-    const Mesh* mesh = model->GetMesh();
-    if (mesh == nullptr) {
-        LOGERROR("Failed to get mesh from default model.");
-        return false;
-    }
-
-    // 从obj模型中解析Mesh后设置到MeshRenderer以进行渲染
-    meshRenderer->SetMesh(mesh);
-    LOGINFO("Model submesh count %d.", mesh->GetSubMeshCount());
-    LOGINFO("Model vertex count %d.", mesh->GetVertexCount());
-
-    // 加载贴图，cgkit支持pbr效果，一般需要配置以下贴图
-    String texAlbedo = "models/Avatar/Albedo_01.png";
-    String texNormal = "models/Avatar/Normal_01.png";
-    String texPbr = "models/Avatar/Pbr_01.png";
-    String texEmissive = "shaders/pbr_brdf.png";
-
-    u32 subMeshCnt = mesh->GetSubMeshCount();
-    for (u32 i = 0; i < subMeshCnt; ++i) {
-        SubMesh* subMesh = mesh->GetSubMesh(i);
-        if (subMesh == nullptr) {
-            LOGERROR("Failed to get submesh %d.", i);
-            continue;
-        }
-
-        // 添加材质
-        Material* material = dynamic_cast<Material*>(gResourceManager.Get(ResourceType::RESOURCE_TYPE_MATERIAL));
-        if (material == nullptr) {
-            LOGERROR("Failed to get default material.");
-            return false;
-        }
-
-        // 初始化管线状态
-        material->Init();
-
-        // 每个SubMesh对应一个Material
-        material->SetSubMesh(subMesh);
-
-        // 设置模型材质的Albedo贴图及采样参数
-        material->SetTexture(TextureType::TEXTURE_TYPE_ALBEDO, texAlbedo);
-        material->SetSamplerParam(TextureType::TEXTURE_TYPE_ALBEDO, SAMPLER_FILTER_BILINEAR,
-                                  SAMPLER_FILTER_BILINEAR, SAMPLER_MIPMAP_BILINEAR, SAMPLER_ADDRESS_CLAMP);
-
-        // 设置模型材质的Normal贴图及采样参数
-        material->SetTexture(TextureType::TEXTURE_TYPE_NORMAL, texNormal);
-        material->SetSamplerParam(TextureType::TEXTURE_TYPE_NORMAL, SAMPLER_FILTER_BILINEAR,
-                                  SAMPLER_FILTER_BILINEAR, SAMPLER_MIPMAP_BILINEAR, SAMPLER_ADDRESS_CLAMP);
-
-        // 设置模型材质的PBR贴图及采样参数
-        material->SetTexture(TextureType::TEXTURE_TYPE_PBRTEXTURE, texPbr);
-        material->SetSamplerParam(TextureType::TEXTURE_TYPE_PBRTEXTURE, SAMPLER_FILTER_BILINEAR,
-                                  SAMPLER_FILTER_BILINEAR, SAMPLER_MIPMAP_BILINEAR, SAMPLER_ADDRESS_CLAMP);
-
-        // 设置模型材质的Emission贴图及采样参数
-        material->SetTexture(TextureType::TEXTURE_TYPE_EMISSION, texEmissive);
-        material->SetSamplerParam(TextureType::TEXTURE_TYPE_EMISSION, SAMPLER_FILTER_BILINEAR,
-                                  SAMPLER_FILTER_BILINEAR, SAMPLER_MIPMAP_BILINEAR, SAMPLER_ADDRESS_CLAMP);
-
-        // 设置模型材质的EnvMap贴图及采样参数
-        material->SetTexture(TextureType::TEXTURE_TYPE_ENVIRONMENTMAP, m_envMap);
-        material->SetSamplerParam(TextureType::TEXTURE_TYPE_ENVIRONMENTMAP, SAMPLER_FILTER_BILINEAR,
-                                  SAMPLER_FILTER_BILINEAR, SAMPLER_MIPMAP_BILINEAR, SAMPLER_ADDRESS_CLAMP);
-
-        // 设置模型材质的ShaderStage，即vert和frag
-        material->AttachShaderStage(ShaderStageType::SHADER_STAGE_TYPE_VERTEX, "shaders/pbr_vert.spv");
-        material->AttachShaderStage(ShaderStageType::SHADER_STAGE_TYPE_FRAGMENT, "shaders/pbr_frag.spv");
-
-        // 设置背面剔除，并启用DepthTest和DepthWrite
-        material->SetCullMode(CULL_MODE_BACK);
-        material->SetDepthTestEnable(true);
-        material->SetDepthWriteEnable(true);
-        material->Create();
-        meshRenderer->SetMaterial(i, material);
-    }
-
-    // 默认模型位置和大小
+    // Set the default model position and size.
     m_modelObject->SetPosition(SCENE_OBJECT_POSITION);
     m_modelObject->SetScale(SCENE_OBJECT_SCALE);
 
@@ -413,92 +304,118 @@ bool MainApplication::SetupDefaultModel()
     return true;
 }
 
-// 创建天空盒
+// Create a skybox.
 SceneObject* MainApplication::CreateSkybox()
 {
-    // 天空盒需要立方体模型，用以放置六个面的贴图
-    String modelName = "models/test-cube.obj";
-    Model* model = dynamic_cast<Model*>(gResourceManager.Get(modelName));
-    if (model == nullptr) {
-        LOGERROR("Failed to load model with path: %s.", modelName.c_str());
-        return nullptr;
+    SceneObject* skybox = CreateObject("models/test-cube.obj", "material/skybox.cgmat");
+    if (skybox != nullptr) {
+        skybox->SetScale(Vector3(1.f, 1.f, 1.f));
     }
-
-    // 获取Mesh数据
-    const Mesh* mesh = model->GetMesh();
-    if (mesh == nullptr) {
-        LOGERROR("Failed to get mesh from skybox model.");
-        gResourceManager.Delete(model);
-        return nullptr;
-    }
-
-    // 获取SubMesh个数
-    u32 subMeshCnt = mesh->GetSubMeshCount();
-    SceneObject* skyboxObject = gSceneManager.CreateSceneObject();
-    if (skyboxObject == nullptr) {
-        LOGERROR("Failed to create scene object for skybox.");
-        return nullptr;
-    }
-
-    // SceneObject对象要添加Meshrenderer组件才能渲染
-    MeshRenderer* meshRenderer = skyboxObject->AddComponent<MeshRenderer>();
-    if (meshRenderer == nullptr) {
-        LOGERROR("Failed to add MeshRenderer to skybox.");
-        return nullptr;
-    }
-
-    // 从obj模型中解析Mesh后设置到MeshRenderer以进行渲染
-    meshRenderer->SetMesh(mesh);
-    for (u32 i = 0; i < subMeshCnt; ++i) {
-        SubMesh* subMesh = mesh->GetSubMesh(i);
-        if (subMesh == nullptr) {
-            LOGERROR("Failed to get submesh %d.", i);
-            continue;
-        }
-        // 添加材质
-        Material* material = dynamic_cast<Material*>(gResourceManager.Get(ResourceType::RESOURCE_TYPE_MATERIAL));
-        if (material == nullptr) {
-            continue;
-        }
-        material->Init();
-        material->SetSubMesh(subMesh);
-
-        // 设置天空盒材质的环境贴图及采样参数
-        material->SetTexture(TextureType::TEXTURE_TYPE_ENVIRONMENTMAP, m_envMap);
-        material->SetSamplerParam(TextureType::TEXTURE_TYPE_ENVIRONMENTMAP, SAMPLER_FILTER_BILINEAR,
-                                  SAMPLER_FILTER_BILINEAR, SAMPLER_MIPMAP_BILINEAR, SAMPLER_ADDRESS_CLAMP);
-
-        // 设置天空盒材质的ShaderStage，即vert和frag
-        material->AttachShaderStage(ShaderStageType::SHADER_STAGE_TYPE_VERTEX, "shaders/sky_vert.spv");
-        material->AttachShaderStage(ShaderStageType::SHADER_STAGE_TYPE_FRAGMENT, "shaders/sky_frag.spv");
-
-        // 因为在天空盒内，所以此处设置剔除模式为NONE
-        material->SetCullMode(CULL_MODE_NONE);
-        // 启用DepthTest和DepthWrite
-        material->SetDepthTestEnable(true);
-        material->SetDepthWriteEnable(true);
-        material->Create();
-        meshRenderer->SetMaterial(i, material);
-    }
-
-    // 设置天空盒大小，位置和旋转
-    skyboxObject->SetScale(Vector3(1.0f, 1.0f, 1.0f));
-    skyboxObject->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-    skyboxObject->SetRotation(Vector3(0.0f, 0.0, 0.0));
-
-    return skyboxObject;
+    return skybox;
 }
 
-// 创建cgkit应用程序
+SceneObject* MainApplication::CreateObject(const String& modelName, const String& cgmatName, SceneObject* father)
+{
+    SceneObject* sceneObj = nullptr;
+    Model* model = dynamic_cast<Model*>(gResourceManager.Get(modelName));
+    if (model == nullptr) {
+        LOGERROR("load file %s failed", modelName.c_str());
+        return nullptr;
+    }
+    const Mesh* mesh = model->GetMesh();
+    if (mesh == nullptr) {
+        gResourceManager.Delete(model);
+        LOGERROR("mesh is nullptr");
+        return nullptr;
+    }
+    if (father == nullptr) {
+        sceneObj = gSceneManager.CreateSceneObject();
+    } else {
+        sceneObj = new SceneObject(father);
+    }
+    if (sceneObj == nullptr) {
+        gResourceManager.Delete(model);
+        LOGERROR("create SceneObject failed .");
+        return nullptr;
+    }
+    MeshRenderer* meshRenderer = sceneObj->AddComponent<MeshRenderer>();
+    if (meshRenderer == nullptr) {
+        CG_SAFE_DELETE(sceneObj);
+        gResourceManager.Delete(model);
+        LOGERROR("create MeshRenderer failed .");
+        return nullptr;
+    }
+    meshRenderer->SetMesh(model->GetMesh());
+
+    u32 subMeshCnt = mesh->GetSubMeshCount();
+    for (u32 i = 0; i < subMeshCnt; ++i) {
+        const SubMesh* subMesh = mesh->GetSubMesh(i);
+        if (subMesh == nullptr) {
+            continue;
+        }
+        MaterialInstance* materialInstance = dynamic_cast<MaterialInstance*>(gResourceManager.Get(cgmatName.c_str()));
+        if (materialInstance == nullptr) {
+            continue;
+        }
+        materialInstance->SetSubMeshInfo(subMesh);
+        materialInstance->Create();
+        meshRenderer->SetMaterialInstance(i, materialInstance);
+    }
+    return sceneObj;
+}
+
+void MainApplication::AddDirectionalLight()
+{
+    m_directionalLightObject = CG_NEW(SceneObject, nullptr);
+    if (m_directionalLightObject != nullptr) {
+        // Add a Light component to the SceneObject to obtain the Light object.
+        Light* lightCom = m_directionalLightObject->AddComponent<Light>();
+        if (lightCom != nullptr) {
+            // Set the color of the directional light to white.
+            lightCom->SetColor(Vector3::ONE);
+
+            // Set the direction.
+            const Vector3 lightDir(0.1f, 0.2f, 1.0f);
+            lightCom->SetDirection(lightDir);
+
+            // Set the type to directional light.
+            lightCom->SetLightType(LIGHT_TYPE_DIRECTIONAL);
+        } else {
+            LOGERROR("Failed to create directional light.");
+        }
+    } else {
+        LOG_ALLOC_ERROR("Failed to create directional light.");
+    }
+}
+
+void MainApplication::AddPointLight()
+{
+    m_pointLightObject = CG_NEW(SceneObject, nullptr);
+    if (m_pointLightObject != nullptr) {
+        // Add a Light component to the SceneObject to obtain the Light object.
+        Light* lightCom = m_pointLightObject->AddComponent<Light>();
+        if (lightCom != nullptr) {
+            const Vector3 lightColor(0.0f, 10000.0f, 10000.0f);
+            lightCom->SetColor(lightColor);
+            lightCom->SetLightType(LIGHT_TYPE_POINT);
+        } else {
+            LOGERROR("Failed to create point light.");
+        }
+    } else {
+        LOG_ALLOC_ERROR("Failed to create point light.");
+    }
+}
+
+// Create a CG Kit app.
 BaseApplication* CreateMainApplication()
 {
     return new MainApplication();
 }
 
-// 执行超分插件
+// Execute the Offline Super-Resolution plug-in.
 void MainApplication::ExecuteOSRPlugin()
 {
-    // 使用沙盒路径存放超分数据，类似"/storage/emulated/0/Android/data/com.xxx.xxx/files"
+    // Save super-resolution data in the sandbox directory, for example, /storage/emulated/0/Android/data/com.xxx.xxx/files.
     const String localDir = gCGKitInterface.GetProgramDirectory();
     OSRPlugin plugin;
     plugin.ExecuteOSR(localDir);

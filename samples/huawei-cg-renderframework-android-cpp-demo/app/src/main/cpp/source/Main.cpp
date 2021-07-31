@@ -9,11 +9,14 @@ using namespace CGKit;
 
 void android_main(android_app* state)
 {
+    // Instantiate the demo home page.
     auto app = CreateMainApplication();
     if (app == nullptr) {
         return;
     }
+    // Start platform rendering.
     app->Start(reinterpret_cast<void*>(state));
+    // Start the rendering main loop.
     app->MainLoop();
     CG_SAFE_DELETE(app);
 }

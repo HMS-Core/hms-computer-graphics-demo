@@ -14,7 +14,7 @@ public:
     virtual ~MainApplication();
     virtual void Start(void* param);
     virtual void Initialize(const void* winHandle, CGKit::u32 width, CGKit::u32 height);
-    virtual void UnInitialize();
+    virtual void Uninitialize();
     virtual void InitScene();
     virtual void Update(CGKit::f32 deltaTime);
     virtual void Resize(CGKit::u32 width, CGKit::u32 height);
@@ -24,7 +24,12 @@ private:
     bool SetupCamera();
     bool SetupDefaultModel();
     CGKit::SceneObject* CreateSkybox();
+    CGKit::SceneObject* CreateObject(const String& modelName, const String& cgmatName,
+        CGKit::SceneObject* father = nullptr);
+    void AddDirectionalLight();
+    void AddPointLight();
     void ExecuteOSRPlugin();
+
 private:
     bool m_touchBegin;
     bool m_osrPluginExecuted = false;
@@ -42,8 +47,8 @@ private:
     CGKit::SceneObject* m_skyObject = nullptr;
     CGKit::SceneObject* m_pointLightObject = nullptr;
     CGKit::Camera* m_mainCamera = nullptr;
-    CGKit::String m_envMap = "cubemaps/env/cubemap.cub";
 };
 
 CGKit::BaseApplication* CreateMainApplication();
+
 #endif

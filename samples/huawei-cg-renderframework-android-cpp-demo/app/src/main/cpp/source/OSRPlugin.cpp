@@ -40,7 +40,7 @@ u8* OSRPlugin::ReadPPM(const String& path, u32& width, u32& height)
             (ss >> height) && (height > 0) && (height <= MAX_HEIGHT) &&
             getline(fIn, line)) {
             pixelsSize = width * height * CHANNELS_RGB;
-            pixels = CG_NEW u8[pixelsSize];
+            pixels = CG_NEW_ARRAY(u8, pixelsSize);
             if (pixels == nullptr) {
                 fIn.close();
                 return nullptr;
@@ -58,7 +58,7 @@ u8* OSRPlugin::ReadPPM(const String& path, u32& width, u32& height)
         fIn.close();
         return pixels;
     } else {
-        CG_DELETE_ARRAY(pixels);
+        CG_DELETE_ARRAY(u8, pixels);
         fIn.close();
         return nullptr;
     }
@@ -95,7 +95,7 @@ bool OSRPlugin::CreateBuffer(BufferDescriptor& buffer, u32 w, u32 h, PixelFormat
     if (w <= 0 || h <= 0 || c < 0) {
         return false;
     }
-    u8* pixels = CG_NEW u8[w * h * c];
+    u8* pixels = CG_NEW_ARRAY(u8, w * h * c);
     if (pixels == nullptr) {
         return false;
     }
@@ -134,7 +134,7 @@ bool OSRPlugin::WriteBuffer(const BufferDescriptor& buffer, const String& path)
 void OSRPlugin::DeleteBuffer(BufferDescriptor& buffer)
 {
     if (buffer.addr != nullptr) {
-        CG_DELETE(buffer.addr);
+        CG_DELETE_ARRAY(u8, buffer.addr);
     }
     buffer.addr = nullptr;
     buffer.width = buffer.height = buffer.len = 0;

@@ -1,0 +1,50 @@
+{
+    "basePath" : "material/allParameters.bmat",
+
+    "rasterizationState": {
+        "cullMode": "CULL_MODE_BACK"
+    },
+    "depthStencilState": {
+        "depthTestEnable": true,
+        "depthWriteEnable": true
+    },
+
+    "blendAttachmentState": {},
+
+    "resource": {
+        "texture": [{
+                "uri": "models/Avatar/Albedo_01.png",
+                "name": "albedoTexture",
+                "samplerIndex": 0
+            },
+            {
+                "uri": "models/Avatar/Normal_01.png",
+                "name": "normalTexture",
+                "samplerIndex": 0
+            },
+            {
+                "uri": "models/Avatar/Pbr_01.png",
+                "name": "pbrTexture",
+                "samplerIndex": 0
+            },
+            {
+                "uri": "shaders/pbr_brdf.png",
+                "name": "BRDFTexture",
+                "samplerIndex": 0
+            },
+            {
+                "uri": "shaders/blackEmission.png",
+                "name": "emissionTexture",
+                "samplerIndex": 0
+            },
+            {
+                "uri": "cubemaps/env/cubemap.cub",
+                "name": "envTexture",
+                "samplerIndex": 0
+            }
+        ],
+        "sampler": [{
+            "filterMin": "SAMPLER_FILTER_BILINEAR"
+        }]
+    }
+}
