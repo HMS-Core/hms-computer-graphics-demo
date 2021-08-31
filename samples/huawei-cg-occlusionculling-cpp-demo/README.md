@@ -28,7 +28,7 @@ Occlusion Culling sample code provides reference of how to use APIs and configur
     Execute the `./Sample` command in the "/data/local/tmp" directory.
 
 ## Supported Environments
-1. Devices with Android 7.0 or later.
+1. Devices with Android 8.0 or later.
 
 ## Result
 <img src="OcclusionCullingResult.jpg" width="50%" height="50%">

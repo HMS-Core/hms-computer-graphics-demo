@@ -28,7 +28,7 @@
     在"/data/local/tmp"目录下执行`./Sample`命令。
 
 ## 环境要求
-1. Android 7.0及以上的设备。
+1. Android 8.0及以上的设备。
 
 ## 运行结果
 <img src="OcclusionCullingResult.jpg" width="50%" height="50%">
