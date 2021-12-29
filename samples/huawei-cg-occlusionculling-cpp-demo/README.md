@@ -11,7 +11,7 @@
 Occlusion Culling sample code provides reference of how to use APIs and configurable items of Occlusion Culling.
 
 ## Getting Started
-1. Download the [cgsdk-plugin](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5) and unpackage the cgsdk-plugin-occlusionculling directory to the sample directory.
+1. Download the [cgsdk-plugin](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5?ha_source=hms1) and unpackage the cgsdk-plugin-occlusionculling directory to the sample directory.
 
 2. Build the sample:
 

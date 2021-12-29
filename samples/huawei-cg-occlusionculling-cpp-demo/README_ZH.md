@@ -11,7 +11,7 @@
 遮挡剔除示例代码介绍遮挡剔除API使用方法和配置项设置。
 
 ## 开发准备
-1. 下载[cgsdk-plugin](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5) 将cgsdk-plugin-occlusionculling目录解压到sample目录下。
+1. 下载[cgsdk-plugin](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5?ha_source=hms1) 将cgsdk-plugin-occlusionculling目录解压到sample目录下。
 
 2. 编译demo
 

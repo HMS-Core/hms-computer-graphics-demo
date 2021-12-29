@@ -20,7 +20,7 @@ glGetString():query if the device support OpenGL Smart Cache.
 glTexImage2D() or glTexStorage2D():Add Smart Cache Flag when applying for memory.
 
 ## Preparation
-See details:[HUAWEI HMS Core](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050200029)
+See details:[HUAWEI HMS Core](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050200029?ha_source=hms1)
 ### Build
 To build the sample, import the sample to Android Studio (3.x +).
 

@@ -9,7 +9,7 @@
 离线超分插件示例代码提供离线超分插件样例程序，供您参考。<br>
 下表为示例代码头文件。
     
-从[SDK DOWNLOAD](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5)获取SDK包。本示例代码头文件在压缩包中的路径为: cgsdk-plugin.zip/cgsdk-plugin-offlinesuperresolution.zip/cgsdk-plugin-offlinesuperresolution/pkg-for-thirdpartyengine/<br>
+从[SDK DOWNLOAD](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5?ha_source=hms1)获取SDK包。本示例代码头文件在压缩包中的路径为: cgsdk-plugin.zip/cgsdk-plugin-offlinesuperresolution.zip/cgsdk-plugin-offlinesuperresolution/pkg-for-thirdpartyengine/<br>
  文件|描述
  ---|---
    include/OSRPluginCommon.h:|必要的枚举和结构头文件。<br>
@@ -23,18 +23,18 @@
 4. 检查Android Studio开发环境。在Android Studio中打开示例代码工程目录下的"build.gradle"的文件。在设备或虚拟机上运行TestApp。<br><br>
 5. 运行TestApp.<br>
  (1) 初始化插件。<br><br>
- (2) 选择测试图片。<br><br>
- (3) 执行超采样。<br>
-　 (a) 查询是否支持超采样。<br>
-　 如果支持:<br>
-　 (b) 同步执行超采样。结果保存在`/sdcard/osr/SS_Sync.ppm`中。<br>
-　 (c) 或异步执行超采样。结果保存在`/sdcard/osr/SS_Async.ppm`中。<br><br>
- (4) 或执行图像增强。<br>
-　 (a) 查询是否支持图像增强。<br>
-　  如果支持:<br>
-　 (b) 设置清晰度和亮度调整。<br>
-　 (c) 同步执行图像增强。结果保存在`/sdcard/osr/IE_Sync.ppm`中。<br>
-　 (d) 或异步执行图像增强。结果保存在`/sdcard/osr/IE_Async.ppm`中。<br><br>
+  (2) 选择测试图片。<br><br>
+  (3) 执行超采样。<br>
+ 　 (a) 查询是否支持超采样。<br>
+ 　 如果支持:<br>
+ 　 (b) 同步执行超采样。结果保存在`/sdcard/osr/SS_Sync.ppm`中。<br>
+ 　 (c) 或异步执行超采样。结果保存在`/sdcard/osr/SS_Async.ppm`中。<br><br>
+  (4) 或执行图像增强。<br>
+ 　 (a) 查询是否支持图像增强。<br>
+ 　  如果支持:<br>
+ 　 (b) 设置清晰度和亮度调整。<br>
+ 　 (c) 同步执行图像增强。结果保存在`/sdcard/osr/IE_Sync.ppm`中。<br>
+ 　 (d) 或异步执行图像增强。结果保存在`/sdcard/osr/IE_Async.ppm`中。<br><br>
 6. 反初始化插件。<br>
 
 ## 环境要求

@@ -21,7 +21,7 @@ demo详情请参考示例中的README文件。
 
 如您对示例代码使用有疑问，请前往：
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/huawei-mobile-services?tab=Votes) 提问，上传问题时请打上 `huawei-mobile-services`标签。
-- [华为开发者论坛](https://forums.developer.huawei.com/forumPortal/en/home?fid=0101187876626530001) ，获得更多意见与建议。
+- [华为开发者论坛](https://forums.developer.huawei.com/forumPortal/en/home?fid=0101187876626530001?ha_source=hms1) ，获得更多意见与建议。
 
 如您在运行示例代码时出现错误，请在GitHub提交[issue](https://github.com/HMS-Core/hms-computer-graphics-demo/issues) 或 [Pull Request](https://github.com/HMS-Core/hms-computer-graphics-demo/pulls) 。
 

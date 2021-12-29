@@ -12,7 +12,6 @@
 #include "MainApplication/MainApplication.h"
 
 namespace CGKit {
-
 // Describes pixel format.
 enum OSROperationCode {
     QUERY_SUPER_SAMPLING = 0,
@@ -24,13 +23,14 @@ enum OSROperationCode {
     SET_ASSETS_DIR = 6
 };
 
-static inline s64 GetCurrentTime()
+static inline u64 GetCurrentTimeMilliSecond()
 {
-    struct timeval tv;
-    gettimeofday(&tv, nullptr);
-    return tv.tv_sec * 1000 + tv.tv_usec / 1000;
+    std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::system_clock::now().time_since_epoch());
+    return ms.count();
 }
 
+#ifdef CG_ANDROID_PLATFORM
 class OSRPlugin {
 public:
     OSRPlugin();
@@ -55,5 +55,7 @@ private:
     IPlugin* plugin = nullptr;
     const String pluginName = "OfflineSupRes";
 };
+#endif
+
 }  // namespace CGKit
 #endif

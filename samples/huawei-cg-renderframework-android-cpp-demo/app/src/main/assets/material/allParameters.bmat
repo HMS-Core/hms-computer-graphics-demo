@@ -3,7 +3,6 @@
         "cullMode": "CULL_MODE_BACK",
         "fillMode": "FILL_MODE_FILL",
         "frontFace": "FRONT_FACE_COUNTER_CLOCKWISE",
-        "multiSampleEnable": false,
         "scissorEnable": false,
         "lineWidth": 1.0,
         "pointSize": 1.0
@@ -51,37 +50,6 @@
     }],
 
     "resource": {
-        "texture": [{
-                "uri": "models/chip/chip_albedo.png",
-                "name": "albedoTexture",
-                "samplerIndex": 0
-            },
-            {
-                "uri": "models/chip/chip_normal.png",
-                "name": "normalTexture",
-                "samplerIndex": 0
-            },
-            {
-                "uri": "models/chip/chip_pbr.png",
-                "name": "pbrTexture",
-                "samplerIndex": 0
-            },
-            {
-                "uri": "shaders/pbr_brdf.png",
-                "name": "BRDFTexture",
-                "samplerIndex": 0
-            },
-            {
-                "uri": "shaders/blackEmission.png",
-                "name": "emissionTexture",
-                "samplerIndex": 0
-            },
-            {
-                "uri": "cubemaps/02/cubemap_02_nomip.ktx",
-                "name": "envTexture",
-                "samplerIndex": 0
-            }
-        ],
         "sampler": [{
             "filterMin": "SAMPLER_FILTER_BILINEAR",
             "filterMag": "SAMPLER_FILTER_BILINEAR",
@@ -102,6 +70,10 @@
             {
                 "uri": "shaders/basic_pbr.frag",
                 "type": "SHADER_STAGE_TYPE_FRAGMENT"
+            },
+            {
+                "uri": "shaders/static.vert",
+                "type": "SHADER_STAGE_TYPE_VERTEX"
             }
         ],
 
@@ -109,7 +81,7 @@
         "alphaTestEnable": false,
         "colorWriteEnable": false,
         "ambientColor": 0,
-        "diffuseColor": 0,
+        "diffuseColor": [1, 1, 1, 1],
         "emissiveColor": 0,
         "specularColor": 0,
         "shininess": 0

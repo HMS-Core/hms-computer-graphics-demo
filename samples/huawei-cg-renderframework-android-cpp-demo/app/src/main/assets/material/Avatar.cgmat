@@ -1,18 +1,27 @@
 {
-    "basePath" : "material/allParameters.bmat",
-
-    "rasterizationState": {
-        "cullMode": "CULL_MODE_BACK"
-    },
-    "depthStencilState": {
-        "depthTestEnable": true,
-        "depthWriteEnable": true
-    },
-
-    "blendAttachmentState": {},
-
-    "resource": {
-        "texture": [{
+    "version": 2,
+    "description": "CGKit material configuration",
+    "properties": {
+        "sampler": [
+            {
+                "filterMin": "SAMPLER_FILTER_BILINEAR",
+                "filterMag": "SAMPLER_FILTER_BILINEAR",
+                "filterMipmap": "SAMPLER_MIPMAP_BILINEAR",
+                "addressModeU": "SAMPLER_ADDRESS_CLAMP",
+                "addressModeV": "SAMPLER_ADDRESS_CLAMP",
+                "addressModeW": "SAMPLER_ADDRESS_CLAMP",
+                "comparisonFunc": "COMPARISON_OPERATION_NEVER",
+                "mipLODBias": 0,
+                "maxAnisotropy": 0,
+                "borderColor": 0,
+                "minLOD": 0,
+                "maxLOD": 0,
+                "anisotropyEnabled": false,
+                "comparisonEnabled": false
+            }
+        ],
+        "texture": [
+            {
                 "uri": "models/Avatar/Albedo_01.png",
                 "name": "albedoTexture",
                 "samplerIndex": 0
@@ -38,13 +47,352 @@
                 "samplerIndex": 0
             },
             {
-                "uri": "cubemaps/env/cubemap.cub",
+                "uri": "cubemaps/02/cubemap_02_mip.ktx",
                 "name": "envTexture",
                 "samplerIndex": 0
             }
         ],
-        "sampler": [{
-            "filterMin": "SAMPLER_FILTER_BILINEAR"
-        }]
-    }
+        "constant": [
+            {
+                "name": "ColorInfo",
+                "type": "UNIFORM",
+                "value": [
+                    {
+                        "name": "color",
+                        "type": "color",
+                        "value": [
+                            255,
+                            255,
+                            255,
+                            255
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "techniques": [
+        {
+            "name": "ShadowMap",
+            "type": "opaque",
+            "level": "预留字段，暂不参与解析",
+            "tag": "预留字段，暂不参与解析",
+            "passes": [
+                {
+                    "name": "MainPass",
+                    "rasterizationState": {
+                        "cullMode": "CULL_MODE_NONE",
+                        "fillMode": "FILL_MODE_FILL",
+                        "frontFace": "FRONT_FACE_CLOCKWISE",
+                        "scissorEnable": false,
+                        "lineWidth": 1,
+                        "pointSize": 1
+                    },
+                    "depthStencilState": {
+                        "depthFunc": "COMPARISON_OPERATION_LESS_OR_EQUAL",
+                        "depthTestEnable": true,
+                        "depthClampEnable": false,
+                        "depthWriteEnable": true,
+                        "stencilTestEnable": false,
+                        "front": {
+                            "stencilFail": "STENCIL_OPERATION_KEEP",
+                            "stencilDepthFail": "STENCIL_OPERATION_KEEP",
+                            "stencilPass": "STENCIL_OPERATION_KEEP",
+                            "stencilFunc": "COMPARISON_OPERATION_NOT_EQUAL",
+                            "stencilCompareMask": 255,
+                            "stencilReference": 1,
+                            "stencilReadMask": 255,
+                            "stencilWriteMask": 255
+                        },
+                        "back": {
+                            "stencilFail": "STENCIL_OPERATION_KEEP",
+                            "stencilDepthFail": "STENCIL_OPERATION_KEEP",
+                            "stencilPass": "STENCIL_OPERATION_KEEP",
+                            "stencilFunc": "COMPARISON_OPERATION_NOT_EQUAL",
+                            "stencilCompareMask": 255,
+                            "stencilReference": 1,
+                            "stencilReadMask": 255,
+                            "stencilWriteMask": 255
+                        }
+                    },
+                    "colorBlendState": {
+                        "logicOpEnable": false,
+                        "logicOp": "LOGIC_OP_CLEAR",
+                        "blendAttachmentState": [
+                            {
+                                "srcColorBlend": "BLEND_SRC_ALPHA",
+                                "dstColorBlend": "BLEND_ONE_MINUS_SRC_ALPHA",
+                                "colorBlendOp": "BLEND_OPERATION_ADD",
+                                "srcAlphaBlend": "BLEND_ONE",
+                                "dstAlphaBlend": "BLEND_ZERO",
+                                "alphaBlendOp": "BLEND_OPERATION_ADD",
+                                "renderTargetWriteMask": 15,
+                                "blendFactor": 1,
+                                "blendingEnable": false
+                            }
+                        ]
+                    },
+                    "resource": {
+                        "shader": [
+                            {
+                                "uri": "shaders/shadowMap.vert.spv",
+                                "type": "SHADER_STAGE_TYPE_VERTEX"
+                            },
+                            {
+                                "uri": "shaders/shadowMap.frag.spv",
+                                "type": "SHADER_STAGE_TYPE_FRAGMENT"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "ShadowForward",
+            "type": "opaque",
+            "level": "预留字段，暂不参与解析",
+            "tag": "预留字段，暂不参与解析",
+            "passes": [
+                {
+                    "name": "MainPass",
+                    "rasterizationState": {
+                        "cullMode": "CULL_MODE_NONE",
+                        "fillMode": "FILL_MODE_FILL",
+                        "frontFace": "FRONT_FACE_CLOCKWISE",
+                        "scissorEnable": false,
+                        "lineWidth": 1,
+                        "pointSize": 1
+                    },
+                    "depthStencilState": {
+                        "depthFunc": "COMPARISON_OPERATION_LESS_OR_EQUAL",
+                        "depthTestEnable": true,
+                        "depthClampEnable": false,
+                        "depthWriteEnable": true,
+                        "stencilTestEnable": false,
+                        "front": {
+                            "stencilFail": "STENCIL_OPERATION_KEEP",
+                            "stencilDepthFail": "STENCIL_OPERATION_KEEP",
+                            "stencilPass": "STENCIL_OPERATION_KEEP",
+                            "stencilFunc": "COMPARISON_OPERATION_NOT_EQUAL",
+                            "stencilCompareMask": 255,
+                            "stencilReference": 1,
+                            "stencilReadMask": 255,
+                            "stencilWriteMask": 255
+                        },
+                        "back": {
+                            "stencilFail": "STENCIL_OPERATION_KEEP",
+                            "stencilDepthFail": "STENCIL_OPERATION_KEEP",
+                            "stencilPass": "STENCIL_OPERATION_KEEP",
+                            "stencilFunc": "COMPARISON_OPERATION_NOT_EQUAL",
+                            "stencilCompareMask": 255,
+                            "stencilReference": 1,
+                            "stencilReadMask": 255,
+                            "stencilWriteMask": 255
+                        }
+                    },
+                    "colorBlendState": {
+                        "logicOpEnable": false,
+                        "logicOp": "LOGIC_OP_CLEAR",
+                        "blendAttachmentState": [
+                            {
+                                "srcColorBlend": "BLEND_SRC_ALPHA",
+                                "dstColorBlend": "BLEND_ONE_MINUS_SRC_ALPHA",
+                                "colorBlendOp": "BLEND_OPERATION_ADD",
+                                "srcAlphaBlend": "BLEND_ONE",
+                                "dstAlphaBlend": "BLEND_ZERO",
+                                "alphaBlendOp": "BLEND_OPERATION_ADD",
+                                "renderTargetWriteMask": 15,
+                                "blendFactor": 1,
+                                "blendingEnable": false
+                            }
+                        ]
+                    },
+                    "resource": {
+                        "shader": [
+                            {
+                                "uri": "shaders/forward_shadow_pbr.vert.spv",
+                                "type": "SHADER_STAGE_TYPE_VERTEX"
+                            },
+                            {
+                                "uri": "shaders/forward_shadow_pbr.frag.spv",
+                                "type": "SHADER_STAGE_TYPE_FRAGMENT"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Forward",
+            "type": "opaque",
+            "level": "预留字段，暂不参与解析",
+            "tag": "预留字段，暂不参与解析",
+            "passes": [
+                {
+                    "name": "MainPass",
+                    "rasterizationState": {
+                        "cullMode": "CULL_MODE_BACK",
+                        "fillMode": "FILL_MODE_FILL",
+                        "frontFace": "FRONT_FACE_COUNTER_CLOCKWISE",
+                        "scissorEnable": false,
+                        "lineWidth": 1,
+                        "pointSize": 1
+                    },
+                    "depthStencilState": {
+                        "depthFunc": "COMPARISON_OPERATION_LESS_OR_EQUAL",
+                        "depthTestEnable": true,
+                        "depthClampEnable": false,
+                        "depthWriteEnable": true,
+                        "stencilTestEnable": true,
+                        "front": {
+                            "stencilFail": "STENCIL_OPERATION_REPLACE",
+                            "stencilDepthFail": "STENCIL_OPERATION_REPLACE",
+                            "stencilPass": "STENCIL_OPERATION_REPLACE",
+                            "stencilFunc": "COMPARISON_OPERATION_ALWAYS",
+                            "stencilCompareMask": 255,
+                            "stencilReference": 1,
+                            "stencilReadMask": 255,
+                            "stencilWriteMask": 255
+                        },
+                        "back": {
+                            "stencilFail": "STENCIL_OPERATION_REPLACE",
+                            "stencilDepthFail": "STENCIL_OPERATION_REPLACE",
+                            "stencilPass": "STENCIL_OPERATION_REPLACE",
+                            "stencilFunc": "COMPARISON_OPERATION_ALWAYS",
+                            "stencilCompareMask": 255,
+                            "stencilReference": 1,
+                            "stencilReadMask": 255,
+                            "stencilWriteMask": 255
+                        }
+                    },
+                    "colorBlendState": {
+                        "logicOpEnable": false,
+                        "logicOp": "LOGIC_OP_CLEAR",
+                        "blendAttachmentState": [
+                            {
+                                "srcColorBlend": "BLEND_SRC_ALPHA",
+                                "dstColorBlend": "BLEND_ONE_MINUS_SRC_ALPHA",
+                                "colorBlendOp": "BLEND_OPERATION_ADD",
+                                "srcAlphaBlend": "BLEND_ONE",
+                                "dstAlphaBlend": "BLEND_ZERO",
+                                "alphaBlendOp": "BLEND_OPERATION_ADD",
+                                "renderTargetWriteMask": 15,
+                                "blendFactor": 1,
+                                "blendingEnable": false
+                            }
+                        ]
+                    },
+                    "resource": {
+                        "shader": [
+                            {
+                                "uri": "shaders/basic_pbr.frag",
+                                "type": "SHADER_STAGE_TYPE_FRAGMENT"
+                            },
+                            {
+                                "uri": "shaders/static.vert",
+                                "type": "SHADER_STAGE_TYPE_VERTEX"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Deferred",
+            "type": "opaque",
+            "level": "预留字段，暂不参与解析",
+            "tag": "预留字段，暂不参与解析",
+            "passes": [
+                {
+                    "name": "G-Buffer",
+                    "rasterizationState": {
+                        "cullMode": "CULL_MODE_BACK",
+                        "fillMode": "FILL_MODE_FILL",
+                        "frontFace": "FRONT_FACE_COUNTER_CLOCKWISE",
+                        "scissorEnable": false,
+                        "lineWidth": 1,
+                        "pointSize": 1
+                    },
+                    "depthStencilState": {
+                        "depthFunc": "COMPARISON_OPERATION_LESS_OR_EQUAL",
+                        "depthTestEnable": true,
+                        "depthClampEnable": false,
+                        "depthWriteEnable": true,
+                        "stencilTestEnable": true,
+                        "front": {
+                            "stencilFail": "STENCIL_OPERATION_REPLACE",
+                            "stencilDepthFail": "STENCIL_OPERATION_REPLACE",
+                            "stencilPass": "STENCIL_OPERATION_REPLACE",
+                            "stencilFunc": "COMPARISON_OPERATION_ALWAYS",
+                            "stencilCompareMask": 255,
+                            "stencilReference": 1,
+                            "stencilReadMask": 255,
+                            "stencilWriteMask": 255
+                        },
+                        "back": {
+                            "stencilFail": "STENCIL_OPERATION_REPLACE",
+                            "stencilDepthFail": "STENCIL_OPERATION_REPLACE",
+                            "stencilPass": "STENCIL_OPERATION_REPLACE",
+                            "stencilFunc": "COMPARISON_OPERATION_ALWAYS",
+                            "stencilCompareMask": 255,
+                            "stencilReference": 1,
+                            "stencilReadMask": 255,
+                            "stencilWriteMask": 255
+                        }
+                    },
+                    "colorBlendState": {
+                        "logicOpEnable": false,
+                        "logicOp": "LOGIC_OP_CLEAR",
+                        "blendAttachmentState": [
+                            {
+                                "srcColorBlend": "BLEND_SRC_ALPHA",
+                                "dstColorBlend": "BLEND_ONE_MINUS_SRC_ALPHA",
+                                "colorBlendOp": "BLEND_OPERATION_ADD",
+                                "srcAlphaBlend": "BLEND_ONE",
+                                "dstAlphaBlend": "BLEND_ZERO",
+                                "alphaBlendOp": "BLEND_OPERATION_ADD",
+                                "renderTargetWriteMask": 15,
+                                "blendFactor": 1,
+                                "blendingEnable": false
+                            },
+                            {
+                                "srcColorBlend": "BLEND_SRC_ALPHA",
+                                "dstColorBlend": "BLEND_ONE_MINUS_SRC_ALPHA",
+                                "colorBlendOp": "BLEND_OPERATION_ADD",
+                                "srcAlphaBlend": "BLEND_ONE",
+                                "dstAlphaBlend": "BLEND_ZERO",
+                                "alphaBlendOp": "BLEND_OPERATION_ADD",
+                                "renderTargetWriteMask": 15,
+                                "blendFactor": 1,
+                                "blendingEnable": false
+                            },
+                            {
+                                "srcColorBlend": "BLEND_SRC_ALPHA",
+                                "dstColorBlend": "BLEND_ONE_MINUS_SRC_ALPHA",
+                                "colorBlendOp": "BLEND_OPERATION_ADD",
+                                "srcAlphaBlend": "BLEND_ONE",
+                                "dstAlphaBlend": "BLEND_ZERO",
+                                "alphaBlendOp": "BLEND_OPERATION_ADD",
+                                "renderTargetWriteMask": 15,
+                                "blendFactor": 1,
+                                "blendingEnable": false
+                            }
+                        ]
+                    },
+                    "resource": {
+                        "shader": [
+                            {
+                                "uri": "shaders/deferred_pbr_gbuffer.frag.spv",
+                                "type": "SHADER_STAGE_TYPE_FRAGMENT"
+                            },
+                            {
+                                "uri": "shaders/deferred_pbr_gbuffer.vert.spv",
+                                "type": "SHADER_STAGE_TYPE_VERTEX"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
 }

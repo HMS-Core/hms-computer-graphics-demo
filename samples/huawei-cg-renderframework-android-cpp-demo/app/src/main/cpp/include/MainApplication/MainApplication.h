@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2020-2020. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2020-2021. All rights reserved.
  * Description: A sample that illustrates the rendering of a triangle.
  */
 
@@ -24,8 +24,6 @@ private:
     bool SetupCamera();
     bool SetupDefaultModel();
     CGKit::SceneObject* CreateSkybox();
-    CGKit::SceneObject* CreateObject(const String& modelName, const String& cgmatName,
-        CGKit::SceneObject* father = nullptr);
     void AddDirectionalLight();
     void AddPointLight();
     void ExecuteOSRPlugin();

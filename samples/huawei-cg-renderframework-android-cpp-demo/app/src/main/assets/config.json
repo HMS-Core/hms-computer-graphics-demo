@@ -1,0 +1,20 @@
+{
+    "title": "CGKitRenderDemo",
+    "engineName": "CGkit",
+    "screenWidth": "1024",
+    "screenHeight": "768",
+    "fullScreen": "false",
+    "sceneManagerType": "SCENE_MANAGER_TYPE_QUADTREE",
+    "maxQuadTreeDepth": "4",
+    "maxAnisotropy": "16",
+    "backBufferFormat": "PIXEL_FORMAT_R8G8B8A8_UNORM",
+    "backBufferCount": "3",
+    "majorVersion": "1",
+    "minorVersion": "0",
+    "validationLayer": "false",
+    "preRotation": "true",
+    "multiThreadRendering": "false",
+    "multiThreadFrustumCulling": "false",
+    "threadCount": "0",
+    "cascadeSplitCount": "4"
+}

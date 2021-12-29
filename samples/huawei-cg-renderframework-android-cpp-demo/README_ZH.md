@@ -10,7 +10,7 @@
 华为图形计算服务（HUAWEI Computer Graphics Kit）示例代码封装了Vulkan接口，提供示例程序供您参考。<br>
 下面介绍本示例代码的头文件。<br>
 
-请先从([SDK DOWNLOAD](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5))获取SDK包。本示例在压缩包中的路径为: cgsdk-vulkanframework.zip/cgsdk-vulkanframework。<br>
+请先从([SDK DOWNLOAD](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5?ha_source=hms1))获取SDK包。本示例在压缩包中的路径为: cgsdk-vulkanframework.zip/cgsdk-vulkanframework。<br>
 cgsdk-vulkanframework 包含如下头文件:
  文件|描述
  ---|---
@@ -52,10 +52,11 @@ cgsdk-vulkanframework 包含如下头文件:
 4. 编译此demo前，请先将demo导入Android Studio（3.5及以上版本）。<br><br>
 5. 配置示例代码：<br>
  ● 打开示例工程的应用级build.gradle文件，修改applicationid为应用包名。<br>
- ● 在根目录下添加签名证书（.jks），修改示例工程应用级build.gradle文件中的signingConfigs参数。<br>
- ● 参照[华为图形计算服务开发指南](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/demo-data-process-0000001050200023)创建模型和材质<br>
- ● 添加CG渲染框架SDK、cgsdk-plugin-base SDK、cgsdk-plugin-offlinessupersolution SDK到以下目录。<br>
-       
+     ● 在根目录下添加签名证书（.jks），修改示例工程应用级build.gradle文件中的signingConfigs参数。<br>
+     ● 参照[华为图形计算服务开发指南](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/demo-data-process-0000001050200023)创建模型和材质<br>
+     ● 添加CG渲染框架SDK、cgsdk-plugin-base SDK、cgsdk-plugin-offlinessupersolution SDK到以下目录。<br>
+    
+
 　　　[渲染框架SDK]<br>
 　　　◉ 将SDK中的include目录添加到工程中（src/cpp/include）。<br>
 　　　◉ 将SDK中的`libs/arm64-v8a/libcgkit.so`添加到工程中（libs/arm64-v8a）。<br>
@@ -74,8 +75,8 @@ cgsdk-vulkanframework 包含如下头文件:
 6. 在Android设备或虚拟机上运行Vulkan渲染demo。<br><br>
 7. 在Android设备或虚拟机上运行离线超分插件demo。<br>
  ● 在app/src/main/assets/resource目录下运行run.bat。<br>
- ● 双击屏幕。<br>
- ● 从/sdcard/Android/data/com.hisi.CGRenderFrameworkDemo/output_ie_sync.ppm中拉取结果文件。<br>
+  ● 双击屏幕。<br>
+  ● 从/sdcard/Android/data/com.hisi.CGRenderFrameworkDemo/output_ie_sync.ppm中拉取结果文件。<br>
 
 ## 环境要求
 1. Android 8.0及以上的设备。<br>

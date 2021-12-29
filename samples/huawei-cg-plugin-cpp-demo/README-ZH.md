@@ -9,7 +9,7 @@
 华为图形计算服务（HUAWEI Computer Graphics Kit）插件示例代码演示了插件开发过程，并提供示例程序供您参考。<br>
 下面介绍本示例代码的头文件。
 
-SDK说明([SDK DOWNLOAD](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5)):
+SDK说明([SDK DOWNLOAD](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Library-V5/sdk-download-0000001050441521-V5?ha_source=hms1)):
 
 [cgsdk-plugin-base SDK] 路径: cgsdk-plugin.zip/cgsdk-plugin-base.zip/cgsdk-plugin-base/<br>
  文件|描述
@@ -25,8 +25,8 @@ SDK说明([SDK DOWNLOAD](https://developer.huawei.com/consumer/en/doc/developmen
 ## 开发准备
 1. 将"cgsdk-plugin-base"SDK添加到工程中（PluginSdk）。<br>
  (1) 将SDK中的include目录添加到工程中（PluginSdk/Include）。<br>
- (2) 将SDK中的`libs/arm64-v8a/libPluginInterface.so`添加到工程中（PluginSdk/libs/arm64-v8a）。<br>
- (3) 将SDK中的`libs/armeabi-v7a/libPluginInterface.so`添加到工程中（PluginSdk/libs/armeabi-v7a）。<br>
+  (2) 将SDK中的`libs/arm64-v8a/libPluginInterface.so`添加到工程中（PluginSdk/libs/arm64-v8a）。<br>
+  (3) 将SDK中的`libs/armeabi-v7a/libPluginInterface.so`添加到工程中（PluginSdk/libs/armeabi-v7a）。<br>
 
 2. 检查NDK开发环境。推荐使用NDK r21及以上版本。<br>
 3. 配置build.bat，设置NDK_TOOLS路径。<br>

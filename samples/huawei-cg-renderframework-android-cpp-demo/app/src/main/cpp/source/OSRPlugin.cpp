@@ -10,6 +10,7 @@
 #include <sstream>
 #include "OSRPlugin/OSRPlugin.h"
 
+#ifdef CG_ANDROID_PLATFORM
 using namespace std;
 using namespace CGKit;
 static constexpr s32 CHANNELS_RGB = 3;
@@ -365,3 +366,4 @@ void OSRPlugin::ExecuteOSR(const String localDir)
     DeleteBuffer(outBuffer);
     PluginDeInit();
 }
+#endif

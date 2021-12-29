@@ -19,7 +19,7 @@
             android:launchMode="singleInstance">
             <!--android:screenOrientation="portrait">-->
             <meta-data android:name="android.app.lib_name"
-                android:value="main-lib" />
+                android:value="renderdemo" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

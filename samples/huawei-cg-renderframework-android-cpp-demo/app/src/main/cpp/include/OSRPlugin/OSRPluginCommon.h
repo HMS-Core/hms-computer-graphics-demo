@@ -6,23 +6,12 @@
  */
 #ifndef PLUGINCOMMON_H
 #define PLUGINCOMMON_H
+#include "Rendering/RenderCommon.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 namespace CGKit {
-/**
- * @brief Describes pixel format.
- */
-enum PixelFormat {
-    // RGB
-    PIXEL_FORMAT_R8G8B8_UNORM,
-    // RGBA
-    PIXEL_FORMAT_R8G8B8A8_UNORM,
-
-    PIXEL_FORMAT_MAX
-};
-
 /**
  * @brief Describes buffer for plugin inoutput.
  */

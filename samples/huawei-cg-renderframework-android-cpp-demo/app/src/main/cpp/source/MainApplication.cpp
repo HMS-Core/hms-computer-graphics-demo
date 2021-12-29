@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2020-2020. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2020-2021. All rights reserved.
  * Description: A sample that illustrates the rendering of a demo scene.
  */
 
@@ -7,7 +7,6 @@
 #define CGKIT_LOG
 #include "MainApplication/MainApplication.h"
 #include "OSRPlugin/OSRPlugin.h"
-#include <sys/time.h>
 
 using namespace CGKit;
 
@@ -43,37 +42,6 @@ void MainApplication::Initialize(const void* winHandle, u32 width, u32 height)
 // Destroy allocations.
 void MainApplication::Uninitialize()
 {
-    // Destroy the camera object.
-    if (m_cameraObject != nullptr) {
-        gSceneManager.DeleteObject(m_cameraObject);
-        m_mainCamera = nullptr;
-        m_cameraObject = nullptr;
-    }
-
-    // Destroy the model.
-    if (m_modelObject != nullptr) {
-        gSceneManager.DeleteObject(m_modelObject);
-        m_modelObject = nullptr;
-    }
-
-    // Destroy the skybox.
-    if (m_skyObject != nullptr) {
-        gSceneManager.DeleteObject(m_skyObject);
-        m_skyObject = nullptr;
-    }
-
-    // Destroy the directional light source.
-    if (m_directionalLightObject != nullptr) {
-        gSceneManager.DeleteObject(m_directionalLightObject);
-        m_directionalLightObject = nullptr;
-    }
-
-    // Destroy the point light source.
-    if (m_pointLightObject != nullptr) {
-        gSceneManager.DeleteObject(m_pointLightObject);
-        m_pointLightObject = nullptr;
-    }
-
     // Destroy all your allocations and then call the destruction method of CG Kit to uninitialize the system.
     BaseApplication::Uninitialize();
 }
@@ -176,7 +144,7 @@ void MainApplication::ProcessInputEvent(const InputEvent* inputEvent)
     // Customize input events.
     EventSource source = inputEvent->GetSource();
     static bool tapDetected = false;
-    static s64 lastTime = 0;
+    static u64 lastTime = 0;
 
     // This demo demonstrates only touch events.
     if(source != EVENT_SOURCE_TOUCHSCREEN) {
@@ -194,10 +162,12 @@ void MainApplication::ProcessInputEvent(const InputEvent* inputEvent)
     if (touchEvent->GetAction() == TOUCH_ACTION_DOWN) {
         LOGINFO("Action move start.");
         m_touchBegin = true;
+#ifdef CG_ANDROID_PLATFORM
         // Two taps happening within the double-tap interval constitute a double-tap action.
-        if (!m_osrPluginExecuted && tapDetected && (abs(GetCurrentTime() - lastTime) < DOUBLE_TAP_INTERVAL_MS)) {
+        if (!m_osrPluginExecuted && tapDetected && (GetCurrentTimeMilliSecond() - lastTime < DOUBLE_TAP_INTERVAL_MS)) {
             ExecuteOSRPlugin();
         }
+#endif
     } else if (touchEvent->GetAction() == TOUCH_ACTION_MOVE) {  // Touch action: move
         // Ensure that the touch is started to obtain the coordinates of last touch.
         if (!m_touchBegin) {
@@ -234,7 +204,7 @@ void MainApplication::ProcessInputEvent(const InputEvent* inputEvent)
         m_touchBegin = false;
         if (!m_osrPluginExecuted) {
             tapDetected = true;
-            lastTime = GetCurrentTime();
+            lastTime = GetCurrentTimeMilliSecond();
         }
     } else if (touchEvent->GetAction() == TOUCH_ACTION_CANCEL) {  // Cancel the touch action.
         LOGINFO("Action cancel.");
@@ -267,30 +237,36 @@ bool MainApplication::SetupCamera()
     }
 
     // Set camera parameters.
-    const f32 FOV = 60.f;
-    const f32 NEAR = 0.1f;
-    const f32 FAR = 500.0f;
-    const Vector3 EYE_POSITION(0.0f, 0.0f, 0.0f);
+    const f32 fov = 60.f;
+    const f32 zNear = 0.1f;
+    const f32 zFar = 500.0f;
+    const Vector3 eyePosition(0.0f, 0.0f, 0.0f);
 
     // Initialize the camera position to the origin.
-    m_cameraObject->SetPosition(EYE_POSITION);
+    m_cameraObject->SetPosition(eyePosition);
 
     // The camera type is initialized to perspective projection, to simulate human vision.
     m_mainCamera->SetProjectionType(ProjectionType::PROJECTION_TYPE_PERSPECTIVE);
 
     // Set perspective projection parameters, including the FOV, aspect ratio, near clipping plane, and far clipping plane.
-    m_mainCamera->SetPerspective(FOV, gCGKitInterface.GetAspectRatio(), NEAR, FAR);
+    m_mainCamera->SetPerspective(fov, gCGKitInterface.GetAspectRatio(), zNear, zFar);
 
     // Set the camera viewport. By default, the camera viewport is displayed in full screen.
     m_mainCamera->SetViewport(0, 0, gCGKitInterface.GetScreenWidth(), gCGKitInterface.GetScreenHeight());
+
+    m_mainCamera->SetMainCamera(true);
+    m_mainCamera->SetRenderingPath(RenderingPathType::RENDER_PATH_TYPE_FORWARD);
+    m_mainCamera->SetLayerMask(LAYER_TYPE_GEOMETRY);
+    m_mainCamera->SetLayerMask(LAYER_TYPE_SKYBOX);
     gSceneManager.SetMainCamera(m_mainCamera);
+
     LOGINFO("Setup main camera done.");
     return true;
 }
 
 bool MainApplication::SetupDefaultModel()
 {
-    m_modelObject = CreateObject("models/Avatar/body.obj", "material/Avatar.cgmat");
+    m_modelObject = gSceneManager.CreateSceneObject("models/Avatar/body.obj", "material/Avatar.cgmat");
     if (m_modelObject == nullptr) {
         LOGERROR("Create scene object failed");
         return false;
@@ -307,61 +283,11 @@ bool MainApplication::SetupDefaultModel()
 // Create a skybox.
 SceneObject* MainApplication::CreateSkybox()
 {
-    SceneObject* skybox = CreateObject("models/test-cube.obj", "material/skybox.cgmat");
+    SceneObject* skybox = gSceneManager.CreateSceneObject("models/test-cube.obj", "material/skybox.cgmat");
     if (skybox != nullptr) {
         skybox->SetScale(Vector3(1.f, 1.f, 1.f));
     }
     return skybox;
-}
-
-SceneObject* MainApplication::CreateObject(const String& modelName, const String& cgmatName, SceneObject* father)
-{
-    SceneObject* sceneObj = nullptr;
-    Model* model = dynamic_cast<Model*>(gResourceManager.Get(modelName));
-    if (model == nullptr) {
-        LOGERROR("load file %s failed", modelName.c_str());
-        return nullptr;
-    }
-    const Mesh* mesh = model->GetMesh();
-    if (mesh == nullptr) {
-        gResourceManager.Delete(model);
-        LOGERROR("mesh is nullptr");
-        return nullptr;
-    }
-    if (father == nullptr) {
-        sceneObj = gSceneManager.CreateSceneObject();
-    } else {
-        sceneObj = new SceneObject(father);
-    }
-    if (sceneObj == nullptr) {
-        gResourceManager.Delete(model);
-        LOGERROR("create SceneObject failed .");
-        return nullptr;
-    }
-    MeshRenderer* meshRenderer = sceneObj->AddComponent<MeshRenderer>();
-    if (meshRenderer == nullptr) {
-        CG_SAFE_DELETE(sceneObj);
-        gResourceManager.Delete(model);
-        LOGERROR("create MeshRenderer failed .");
-        return nullptr;
-    }
-    meshRenderer->SetMesh(model->GetMesh());
-
-    u32 subMeshCnt = mesh->GetSubMeshCount();
-    for (u32 i = 0; i < subMeshCnt; ++i) {
-        const SubMesh* subMesh = mesh->GetSubMesh(i);
-        if (subMesh == nullptr) {
-            continue;
-        }
-        MaterialInstance* materialInstance = dynamic_cast<MaterialInstance*>(gResourceManager.Get(cgmatName.c_str()));
-        if (materialInstance == nullptr) {
-            continue;
-        }
-        materialInstance->SetSubMeshInfo(subMesh);
-        materialInstance->Create();
-        meshRenderer->SetMaterialInstance(i, materialInstance);
-    }
-    return sceneObj;
 }
 
 void MainApplication::AddDirectionalLight()
@@ -373,13 +299,11 @@ void MainApplication::AddDirectionalLight()
         if (lightCom != nullptr) {
             // Set the color of the directional light to white.
             lightCom->SetColor(Vector3::ONE);
-
+            // Set the type to directional light.
+            lightCom->SetLightType(LIGHT_TYPE_DIRECTIONAL);
             // Set the direction.
             const Vector3 lightDir(0.1f, 0.2f, 1.0f);
             lightCom->SetDirection(lightDir);
-
-            // Set the type to directional light.
-            lightCom->SetLightType(LIGHT_TYPE_DIRECTIONAL);
         } else {
             LOGERROR("Failed to create directional light.");
         }
@@ -396,8 +320,8 @@ void MainApplication::AddPointLight()
         Light* lightCom = m_pointLightObject->AddComponent<Light>();
         if (lightCom != nullptr) {
             const Vector3 lightColor(0.0f, 10000.0f, 10000.0f);
-            lightCom->SetColor(lightColor);
             lightCom->SetLightType(LIGHT_TYPE_POINT);
+            lightCom->SetColor(lightColor);
         } else {
             LOGERROR("Failed to create point light.");
         }
@@ -412,6 +336,7 @@ BaseApplication* CreateMainApplication()
     return new MainApplication();
 }
 
+#ifdef CG_ANDROID_PLATFORM
 // Execute the Offline Super-Resolution plug-in.
 void MainApplication::ExecuteOSRPlugin()
 {
@@ -421,3 +346,4 @@ void MainApplication::ExecuteOSRPlugin()
     plugin.ExecuteOSR(localDir);
     m_osrPluginExecuted = true;
 }
+#endif

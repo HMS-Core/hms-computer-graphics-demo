@@ -18,7 +18,7 @@
 2. glTexImage2D()/glTexStorage2D()：申请内存时添加Smart Cache标志。 <br>
 
 ## 开发准备
-详细步骤请参见:[业务简介](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050200029)
+详细步骤请参见:[业务简介](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/introduction-0000001050200029?ha_source=hms1)
 ### 编译样例
 编译此demo前，请先将demo导入Android Studio（3.0及以上版本）。
 
