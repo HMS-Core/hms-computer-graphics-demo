@@ -22,8 +22,8 @@ MainApplication::~MainApplication() {}
 // Start CG Kit and configure system event listening.
 void MainApplication::Start(void* param)
 {
-    gCGKitInterface.SetSceneManagerType(SCENE_MANAGER_TYPE_QUADTREE);
     BaseApplication::Start(param);
+    SetSceneManagerType(SCENE_MANAGER_TYPE_QUADTREE);
 
     // Set the log level to LOG_VERBOSE to overwrite the default log level of CG Kit.
     Log::SetLogLevel(LOG_VERBOSE);
@@ -33,9 +33,9 @@ void MainApplication::Start(void* param)
 void MainApplication::Initialize(const void* winHandle, u32 width, u32 height)
 {
     // Set the number of threads.
-    gCGKitInterface.SetThreadCount(HALF_CORE_NUM);
+    SetThreadCount(HALF_CORE_NUM);
     // Turn on the multi-threaded rendering switch, the default is false to not star.
-    gCGKitInterface.SetMultiThreadRendering(true);
+    EnableMultiThreadRendering(true);
     BaseApplication::Initialize(winHandle, width, height);
 }
 
@@ -58,7 +58,7 @@ void MainApplication::InitScene()
     const u32 sceneHeight = 1024;
     const u32 sceneDepth = 1024;
     const Vector3 center = { 0.0, 0.0, 0.0 };
-    gSceneManager.InitScene(center, sceneWidth, sceneHeight, sceneDepth);
+    m_sceneManager->InitScene(center, sceneWidth, sceneHeight, sceneDepth);
 
     // Set the camera.
     if(!SetupCamera()) {
@@ -222,7 +222,7 @@ bool MainApplication::SetupCamera()
      * Add a camera.
      * Create a SceneObject object.
      */
-    m_cameraObject = gSceneManager.CreateSceneObject();
+    m_cameraObject = m_sceneManager->CreateSceneObject();
     if (m_cameraObject == nullptr) {
         LOGERROR("Failed to create camera object.");
         return false;
@@ -249,16 +249,15 @@ bool MainApplication::SetupCamera()
     m_mainCamera->SetProjectionType(ProjectionType::PROJECTION_TYPE_PERSPECTIVE);
 
     // Set perspective projection parameters, including the FOV, aspect ratio, near clipping plane, and far clipping plane.
-    m_mainCamera->SetPerspective(fov, gCGKitInterface.GetAspectRatio(), zNear, zFar);
+    m_mainCamera->SetPerspective(fov, GetAspectRatio(), zNear, zFar);
 
     // Set the camera viewport. By default, the camera viewport is displayed in full screen.
-    m_mainCamera->SetViewport(0, 0, gCGKitInterface.GetScreenWidth(), gCGKitInterface.GetScreenHeight());
+    m_mainCamera->SetViewport(0, 0, GetScreenWidth(), GetScreenHeight());
 
     m_mainCamera->SetMainCamera(true);
     m_mainCamera->SetRenderingPath(RenderingPathType::RENDER_PATH_TYPE_FORWARD);
-    m_mainCamera->SetLayerMask(LAYER_TYPE_GEOMETRY);
-    m_mainCamera->SetLayerMask(LAYER_TYPE_SKYBOX);
-    gSceneManager.SetMainCamera(m_mainCamera);
+    m_mainCamera->SetLayerMask(LAYER_TYPE_SKYBOX | LAYER_TYPE_GEOMETRY);
+    m_sceneManager->SetMainCamera(m_mainCamera);
 
     LOGINFO("Setup main camera done.");
     return true;
@@ -266,7 +265,8 @@ bool MainApplication::SetupCamera()
 
 bool MainApplication::SetupDefaultModel()
 {
-    m_modelObject = gSceneManager.CreateSceneObject("models/Avatar/body.obj", "material/Avatar.cgmat");
+    m_modelObject = m_sceneManager->CreateSceneObject("models/Avatar/body.obj",
+        "material/CGRender_material/Avatar.cgmat");
     if (m_modelObject == nullptr) {
         LOGERROR("Create scene object failed");
         return false;
@@ -275,6 +275,7 @@ bool MainApplication::SetupDefaultModel()
     // Set the default model position and size.
     m_modelObject->SetPosition(SCENE_OBJECT_POSITION);
     m_modelObject->SetScale(SCENE_OBJECT_SCALE);
+    m_modelObject->SetLayerType(LAYER_TYPE_GEOMETRY);
 
     LOGINFO("Load default model done.");
     return true;
@@ -283,16 +284,18 @@ bool MainApplication::SetupDefaultModel()
 // Create a skybox.
 SceneObject* MainApplication::CreateSkybox()
 {
-    SceneObject* skybox = gSceneManager.CreateSceneObject("models/test-cube.obj", "material/skybox.cgmat");
+    SceneObject* skybox = m_sceneManager->CreateSceneObject("models/test-cube.obj",
+        "material/CGRender_material/skybox.cgmat");
     if (skybox != nullptr) {
         skybox->SetScale(Vector3(1.f, 1.f, 1.f));
+        skybox->SetLayerType(LAYER_TYPE_SKYBOX);
     }
     return skybox;
 }
 
 void MainApplication::AddDirectionalLight()
 {
-    m_directionalLightObject = CG_NEW(SceneObject, nullptr);
+    m_directionalLightObject = CG_NEW(SceneObject, m_sceneManager, nullptr);
     if (m_directionalLightObject != nullptr) {
         // Add a Light component to the SceneObject to obtain the Light object.
         Light* lightCom = m_directionalLightObject->AddComponent<Light>();
@@ -314,7 +317,7 @@ void MainApplication::AddDirectionalLight()
 
 void MainApplication::AddPointLight()
 {
-    m_pointLightObject = CG_NEW(SceneObject, nullptr);
+    m_pointLightObject = CG_NEW(SceneObject, m_sceneManager, nullptr);
     if (m_pointLightObject != nullptr) {
         // Add a Light component to the SceneObject to obtain the Light object.
         Light* lightCom = m_pointLightObject->AddComponent<Light>();
@@ -341,7 +344,7 @@ BaseApplication* CreateMainApplication()
 void MainApplication::ExecuteOSRPlugin()
 {
     // Save super-resolution data in the sandbox directory, for example, /storage/emulated/0/Android/data/com.xxx.xxx/files.
-    const String localDir = gCGKitInterface.GetProgramDirectory();
+    const String localDir = GetProgramDirectory();
     OSRPlugin plugin;
     plugin.ExecuteOSR(localDir);
     m_osrPluginExecuted = true;
